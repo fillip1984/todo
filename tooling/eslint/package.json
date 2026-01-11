@@ -1,5 +1,5 @@
 {
-  "name": "@acme/eslint-config",
+  "name": "@todo/eslint-config",
   "private": true,
   "type": "module",
   "exports": {
@@ -8,13 +8,13 @@
     "./react": "./react.ts"
   },
   "scripts": {
-    "clean": "git clean -xdf .cache .turbo node_modules",
+    "clean": "git clean -xdf .cache  node_modules",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@eslint/compat": "^1.4.0",
-    "@eslint/js": "catalog:",
+    "@eslint/js": "^9.38.0",
     "@next/eslint-plugin-next": "^16.0.0",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
@@ -24,12 +24,12 @@
     "typescript-eslint": "^8.46.2"
   },
   "devDependencies": {
-    "@acme/prettier-config": "workspace:*",
-    "@acme/tsconfig": "workspace:*",
-    "@types/node": "catalog:",
-    "eslint": "catalog:",
-    "prettier": "catalog:",
-    "typescript": "catalog:"
+    "@todo/prettier-config": "workspace:*",
+    "@todo/tsconfig": "workspace:*",
+    "@types/node": "22.18.12",
+    "eslint": "^9.38.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5.8.3"
   },
-  "prettier": "@acme/prettier-config"
+  "prettier": "@todo/prettier-config"
 }

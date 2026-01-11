@@ -1,5 +1,5 @@
 {
-  "name": "create-t3-turbo",
+  "name": "todo-monorepo",
   "private": true,
   "engines": {
     "node": "^22.21.0",
@@ -7,32 +7,33 @@
   },
   "packageManager": "pnpm@10.19.0",
   "scripts": {
-    "build": "turbo run build",
+    "build": "pnpm -r build",
+    "build:packages": "pnpm -F '!./apps/**' run build",
+    "build:mobile": "pnpm -F !web run build",
+    "build:web": "pnpm -F !mobile run build",
     "clean": "git clean -xdf node_modules",
-    "clean:workspaces": "turbo run clean",
-    "auth:generate": "pnpm -F @acme/auth generate",
-    "db:push": "turbo -F @acme/db push",
-    "db:studio": "turbo -F @acme/db studio",
-    "dev": "turbo watch dev --continue",
-    "dev:next": "turbo watch dev -F @acme/nextjs...",
-    "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
-    "format:fix": "turbo run format --continue -- --write --cache --cache-location .cache/.prettiercache",
-    "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache",
-    "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
+    "clean:workspaces": "pnpm -r clean",
+    "auth:generate": "pnpm -F @todo/auth generate",
+    "db:push": "pnpm -F @todo/db push",
+    "db:studio": "pnpm -F @todo/db studio",
+    "dev": "pnpm -r run dev",
+    "dev:mobile": "pnpm -F mobile run dev",
+    "dev:web": "pnpm -F web run dev",
+    "format": "pnpm -r format --continue -- --cache --cache-location .cache/.prettiercache",
+    "format:fix": "pnpm -r format --continue -- --write --cache --cache-location .cache/.prettiercache",
+    "lint": "pnpm -r lint --continue -- --cache --cache-location .cache/.eslintcache",
+    "lint:fix": "pnpm -r lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
     "lint:ws": "pnpm dlx sherif@latest",
-    "postinstall": "pnpm lint:ws",
-    "typecheck": "turbo run typecheck",
-    "ui-add": "turbo run ui-add",
-    "android": "expo run:android",
-    "ios": "expo run:ios"
+    "preinstall": "npx only-allow pnpm",
+    "prod:db:push": "pnpm dotenv -e .env.prod -- drizzle-kit push",
+    "prod:deploy": "pnpm dotenv -e .env.prod -- sst deploy --stage prod",
+    "prod:nuke": "pnpm dotenv -e .env.prod -- sst remove --stage prod"
   },
   "devDependencies": {
-    "@acme/prettier-config": "workspace:*",
-    "@turbo/gen": "^2.5.8",
-    "dotenv-cli": "^10.0.0",
-    "prettier": "catalog:",
-    "turbo": "^2.5.8",
-    "typescript": "catalog:"
+    "@todo/prettier-config": "workspace:*",
+    "dotenv-cli": "^11.0.0",
+    "prettier": "^3.7.4",
+    "typescript": "^5.9.3"
   },
-  "prettier": "@acme/prettier-config"
+  "prettier": "@todo/prettier-config"
 }
