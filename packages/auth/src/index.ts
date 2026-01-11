@@ -10,11 +10,10 @@ export function initAuth<
   TExtraPlugins extends BetterAuthPlugin[] = [],
 >(options: {
   baseUrl: string;
-  productionUrl: string;
   secret: string | undefined;
 
-  discordClientId: string;
-  discordClientSecret: string;
+  googleClientId: string;
+  googleClientSecret: string;
   extraPlugins?: TExtraPlugins;
 }) {
   const config = {
@@ -25,16 +24,17 @@ export function initAuth<
     secret: options.secret,
     plugins: [
       oAuthProxy({
-        productionURL: options.productionUrl,
+        productionURL: options.baseUrl,
+        currentURL: "expo://",
       }),
       expo(),
       ...(options.extraPlugins ?? []),
     ],
     socialProviders: {
-      discord: {
-        clientId: options.discordClientId,
-        clientSecret: options.discordClientSecret,
-        redirectURI: `${options.productionUrl}/api/auth/callback/discord`,
+      google: {
+        clientId: options.googleClientId,
+        clientSecret: options.googleClientSecret,
+        redirectURI: `${options.baseUrl}/api/auth/callback/google`,
       },
     },
     trustedOrigins: ["expo://"],
