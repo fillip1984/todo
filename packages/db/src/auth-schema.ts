@@ -1,5 +1,3 @@
-import { pgTable } from "drizzle-orm/pg-core";
-
 import { appSchema } from "./db-utils";
 
 export const user = appSchema.table("user", (t) => ({
