@@ -4,27 +4,43 @@ import { TRPCReactProvider } from "~/trpc/react";
 
 import "~/styles/globals.css";
 
-import { ThemeProvider, ThemeToggle } from "~/components/ui/custom/theme";
-import { Toaster } from "~/components/ui/sonner";
-import { cn } from "~/lib/utils";
+import { getSession } from "~/auth/server";
+import SignInView from "~/components/SignInView";
+import { ThemeProvider } from "~/components/ui/custom/theme";
 
 export const metadata: Metadata = {
   title: "Todo",
   description: "Simple monorepo with shared backend for web & mobile apps",
 };
 
-export default function RootLayout(props: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const session = await getSession();
+
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn("relative flex h-screen")}>
-        <ThemeProvider>
-          <TRPCReactProvider>{props.children}</TRPCReactProvider>
-          <div className="absolute right-4 bottom-4">
-            <ThemeToggle />
-          </div>
-          <Toaster />
-        </ThemeProvider>
+      <body>
+        <TRPCReactProvider>
+          <ThemeProvider>
+            {session?.user ? <SignedIn>{children}</SignedIn> : <SignInView />}
+          </ThemeProvider>
+        </TRPCReactProvider>
       </body>
     </html>
   );
 }
+
+const SignedIn = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+  return (
+    <div className="relative flex h-screen overflow-hidden">
+      {/* <SideNav /> */}
+
+      <main className="flex-1">{children}</main>
+      {/* <TaskModal /> */}
+    </div>
+    // </AppContextProvider>
+  );
+};

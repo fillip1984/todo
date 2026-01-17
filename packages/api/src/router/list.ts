@@ -21,13 +21,13 @@ export const listRouter = createTRPCRouter({
       });
     }),
 
-  getAll: protectedProcedure.query(async ({ ctx }) => {
+  readAll: protectedProcedure.query(async ({ ctx }) => {
     return await db.query.list.findMany({
       where: eq(list.userId, ctx.session.user.id),
     });
   }),
 
-  getById: protectedProcedure
+  readById: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
       return await db.query.list.findFirst({
