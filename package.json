@@ -28,7 +28,8 @@
     "preinstall": "npx only-allow pnpm",
     "prod:db:push": "pnpm dotenv -e .env.prod -- drizzle-kit push",
     "prod:deploy": "pnpm dotenv -e .env.prod -- sst deploy --stage prod",
-    "prod:nuke": "pnpm dotenv -e .env.prod -- sst remove --stage prod"
+    "prod:nuke": "pnpm dotenv -e .env.prod -- sst remove --stage prod",
+    "typecheck": "pnpm -r typecheck"
   },
   "devDependencies": {
     "@todo/prettier-config": "workspace:*",
