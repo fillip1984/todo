@@ -31,11 +31,10 @@ export const listRouter = createTRPCRouter({
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
       return await db.query.list.findFirst({
-        where: (table, { eq: eqOp, and }) =>
-          and(
-            eqOp(table.id, input.id),
-            eqOp(table.userId, ctx.session.user.id),
-          ),
+        where: and(eq(list.id, input.id), eq(list.userId, ctx.session.user.id)),
+        with: {
+          tasks: true,
+        },
       });
     }),
 
