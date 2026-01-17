@@ -5,8 +5,8 @@ import { TRPCReactProvider } from "~/trpc/react";
 import "~/styles/globals.css";
 
 import { getSession } from "~/auth/server";
+import { ThemeProvider } from "~/components/my-ui/theme";
 import SignInView from "~/components/SignInView";
-import { ThemeProvider } from "~/components/ui/custom/theme";
 
 export const metadata: Metadata = {
   title: "Todo",

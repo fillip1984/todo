@@ -5,13 +5,13 @@ import { Computer, MoonIcon, SunIcon } from "lucide-react";
 // import { DesktopIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import * as z from "zod/v4";
 
-import { Button } from "../button";
+import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../dropdown-menu";
+} from "../ui/dropdown-menu";
 
 const ThemeModeSchema = z.enum(["light", "dark", "auto"]);
 
