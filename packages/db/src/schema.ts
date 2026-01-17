@@ -1,20 +1,16 @@
 import { relations } from "drizzle-orm";
-import { createInsertSchema } from "drizzle-zod";
-import z from "zod/v4";
 
 import { user } from "./auth-schema";
 import { appSchema, baseFields } from "./db-utils";
-
-export const Post = appSchema.table("post", (t) => ({
-  ...baseFields,
-  title: t.varchar({ length: 256 }).notNull(),
-  content: t.text().notNull(),
-}));
 
 export const list = appSchema.table("list", (t) => ({
   ...baseFields,
   name: t.varchar({ length: 256 }).notNull(),
   description: t.text(),
+  userId: t
+    .text()
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
 }));
 
 export const task = appSchema.table("task", (t) => ({
@@ -25,6 +21,10 @@ export const task = appSchema.table("task", (t) => ({
     .text()
     .notNull()
     .references(() => list.id, { onDelete: "cascade" }),
+  userId: t
+    .text()
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
 }));
 
 // relationships
@@ -46,15 +46,5 @@ export const taskRelations = relations(task, ({ one }) => ({
     references: [user.id],
   }),
 }));
-
-export const CreatePostSchema = createInsertSchema(Post, {
-  title: z.string().max(256),
-  content: z.string().max(256),
-}).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-  userId: true,
-});
 
 export * from "./auth-schema";
