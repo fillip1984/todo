@@ -1,13 +1,15 @@
 {
-  "name": "@todo/mobile",
+  "name": "mobile",
   "private": true,
   "main": "index.ts",
   "scripts": {
+    "build": "pnpm lint && pnpm with-env eas build -p ios -e production --local --non-interactive",
     "clean": "git clean -xdf .cache .expo  android ios node_modules",
     "ios": "expo run:ios",
     "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path .prettierignore",
     "lint": "eslint --flag unstable_native_nodejs_ts_config",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
     "@better-auth/expo": "1.4.13",
@@ -47,6 +49,7 @@
     "@todo/tailwind-config": "workspace:*",
     "@todo/tsconfig": "workspace:*",
     "@types/react": "19.1.17",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^9.39.2",
     "postcss": "^8.5.6",
     "prettier": "^3.8.0",

@@ -9,19 +9,12 @@
       "pnpm": "9.15.4",
       "ios": {
         "resourceClass": "m-medium"
-      }
+      },
+      "distribution": "internal"
     },
     "development": {
       "extends": "base",
-      "developmentClient": true,
-      "distribution": "internal"
-    },
-    "preview": {
-      "extends": "base",
-      "distribution": "internal",
-      "ios": {
-        "simulator": true
-      }
+      "developmentClient": true
     },
     "production": {
       "extends": "base"
