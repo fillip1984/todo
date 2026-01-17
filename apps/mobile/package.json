@@ -48,7 +48,6 @@
     "@todo/api": "workspace:*",
     "@todo/eslint-config": "workspace:*",
     "@todo/prettier-config": "workspace:*",
-    "@todo/tailwind-config": "workspace:*",
     "@todo/tsconfig": "workspace:*",
     "@types/react": "19.1.17",
     "dotenv-cli": "^11.0.0",

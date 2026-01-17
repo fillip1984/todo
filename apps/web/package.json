@@ -42,7 +42,6 @@
   "devDependencies": {
     "@todo/eslint-config": "workspace:*",
     "@todo/prettier-config": "workspace:*",
-    "@todo/tailwind-config": "workspace:*",
     "@todo/tsconfig": "workspace:*",
     "@types/node": "25.0.9",
     "@types/react": "19.2.8",
