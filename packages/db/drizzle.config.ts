@@ -4,6 +4,10 @@ if (!process.env.POSTGRES_URL) {
   throw new Error("Missing POSTGRES_URL");
 }
 
+if (!process.env.POSTGRES_SCHEMA) {
+  throw new Error("Missing POSTGRES_SCHEMA");
+}
+
 const nonPoolingUrl = process.env.POSTGRES_URL.replace(":6543", ":5432");
 
 export default {
@@ -13,6 +17,6 @@ export default {
     url: nonPoolingUrl,
     ssl: process.env.NODE_ENV === "production" ? "require" : "prefer",
   },
-  schemaFilter: process.env.POSTGREST_SCHEMA,
+  schemaFilter: [`${process.env.POSTGRES_SCHEMA}`],
   casing: "camelCase",
 } satisfies Config;

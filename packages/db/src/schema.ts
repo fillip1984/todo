@@ -1,16 +1,50 @@
-import { sql } from "drizzle-orm";
-import { pgTable } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
-import { z } from "zod/v4";
+import z from "zod/v4";
 
-export const Post = pgTable("post", (t) => ({
-  id: t.uuid().notNull().primaryKey().defaultRandom(),
+import { user } from "./auth-schema";
+import { appSchema, baseFields } from "./db-utils";
+
+export const Post = appSchema.table("post", (t) => ({
+  ...baseFields,
   title: t.varchar({ length: 256 }).notNull(),
   content: t.text().notNull(),
-  createdAt: t.timestamp().defaultNow().notNull(),
-  updatedAt: t
-    .timestamp({ mode: "date", withTimezone: true })
-    .$onUpdateFn(() => sql`now()`),
+}));
+
+export const list = appSchema.table("list", (t) => ({
+  ...baseFields,
+  name: t.varchar({ length: 256 }).notNull(),
+  description: t.text(),
+}));
+
+export const task = appSchema.table("task", (t) => ({
+  ...baseFields,
+  title: t.varchar({ length: 256 }).notNull(),
+  complete: t.boolean().default(false).notNull(),
+  listId: t
+    .text()
+    .notNull()
+    .references(() => list.id, { onDelete: "cascade" }),
+}));
+
+// relationships
+export const listRelations = relations(list, ({ one, many }) => ({
+  tasks: many(task),
+  user: one(user, {
+    fields: [list.userId],
+    references: [user.id],
+  }),
+}));
+
+export const taskRelations = relations(task, ({ one }) => ({
+  list: one(list, {
+    fields: [task.listId],
+    references: [list.id],
+  }),
+  user: one(user, {
+    fields: [task.userId],
+    references: [user.id],
+  }),
 }));
 
 export const CreatePostSchema = createInsertSchema(Post, {
@@ -20,6 +54,7 @@ export const CreatePostSchema = createInsertSchema(Post, {
   id: true,
   createdAt: true,
   updatedAt: true,
+  userId: true,
 });
 
 export * from "./auth-schema";

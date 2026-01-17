@@ -1,41 +1,19 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "@todo/tailwind-config/theme";
 
-@source "../../../../packages/ui/src/*.{ts,tsx}";
+@custom-variant dark (&:is(.dark *));
 
-@custom-variant dark (&:where(.dark, .dark *));
-@custom-variant light (&:where(.light, .light *));
-@custom-variant auto (&:where(.auto, .auto *));
-
-@utility container {
-  margin-inline: auto;
-  padding-inline: 2rem;
-  @media (width >= --theme(--breakpoint-sm)) {
-    max-width: none;
-  }
-  @media (width >= 1400px) {
-    max-width: 1400px;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    letter-spacing: var(--tracking-normal);
-  }
-}
+/* @theme inline {
+  --font-sans:
+    var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+} */
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -144,5 +122,27 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  h1 {
+    @apply text-6xl font-bold;
+  }
+
+  h2 {
+    @apply text-5xl font-semibold;
+  }
+
+  h3 {
+    @apply text-4xl font-semibold;
+  }
+
+  h4 {
+    @apply text-3xl font-semibold;
+  }
+
+  h5 {
+    @apply text-2xl font-semibold;
   }
 }

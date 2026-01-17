@@ -21,6 +21,7 @@
     "dev:web": "pnpm -F web run dev",
     "format": "pnpm -r format --continue -- --cache --cache-location .cache/.prettiercache",
     "format:fix": "pnpm -r format --continue -- --write --cache --cache-location .cache/.prettiercache",
+    "ios": "pnpm -F mobile run ios",
     "lint": "pnpm -r lint --continue -- --cache --cache-location .cache/.eslintcache",
     "lint:fix": "pnpm -r lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
     "lint:ws": "pnpm dlx sherif@latest",
