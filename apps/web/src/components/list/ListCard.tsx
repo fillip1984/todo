@@ -24,13 +24,13 @@ export default function ListCard({ list }: { list: ListType }) {
   );
 
   return (
-    <div className="flex rounded-lg border p-4 shadow-sm">
+    <div className="hover:bg-foreground/10 flex rounded-lg border p-4 shadow-sm">
       <div className="flex grow flex-col">
-        <h2 className="text-lg font-semibold">{list.name}</h2>
-        <p className="text-sm text-gray-600">{list.description}</p>
+        <h2 className="line-clamp-2 text-lg font-semibold">{list.name}</h2>
+        <p className="line-clamp-3 text-sm text-gray-600">{list.description}</p>
       </div>
       <DropdownMenu>
-        <DropdownMenuTrigger>
+        <DropdownMenuTrigger asChild>
           <Button variant="outline" size="icon">
             <EllipsisVertical />
           </Button>

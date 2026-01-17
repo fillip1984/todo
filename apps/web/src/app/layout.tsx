@@ -5,7 +5,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import "~/styles/globals.css";
 
 import { getSession } from "~/auth/server";
-import { ThemeProvider } from "~/components/my-ui/theme";
+import { ThemeProvider, ThemeToggle } from "~/components/my-ui/themeToggle";
 import SignInView from "~/components/SignInView";
 
 export const metadata: Metadata = {
@@ -24,7 +24,12 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <TRPCReactProvider>
-          <ThemeProvider>
+          <ThemeProvider
+            attribute={"class"}
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
             {session?.user ? <SignedIn>{children}</SignedIn> : <SignInView />}
           </ThemeProvider>
         </TRPCReactProvider>
@@ -36,11 +41,8 @@ export default async function RootLayout({
 const SignedIn = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
     <div className="relative flex h-screen overflow-hidden">
-      {/* <SideNav /> */}
-
-      <main className="flex-1">{children}</main>
-      {/* <TaskModal /> */}
+      <main className="grow">{children}</main>
+      <ThemeToggle />
     </div>
-    // </AppContextProvider>
   );
 };

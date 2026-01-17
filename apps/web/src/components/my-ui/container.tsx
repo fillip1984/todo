@@ -7,10 +7,10 @@ import { FaArrowUp } from "react-icons/fa6";
 import { cn } from "~/lib/utils";
 import { Button } from "../ui/button";
 
-export const scrollableContainerVariants = cva("flex grow overflow-y-auto");
+export const containerVariants = cva("flex grow overflow-y-auto");
 
 // TODO: might want to add variants like container size... see shadcn's button.tsx for reference
-export default function ScrollableContainer({
+export default function Container({
   className,
   children,
   scrollToTopButton = false,
@@ -47,19 +47,18 @@ export default function ScrollableContainer({
 
   return (
     <div
-      className={cn(scrollableContainerVariants({ className }))}
+      className={cn(containerVariants({ className }))}
       {...props}
       ref={divRef}
     >
       {/* defaults to:
        *    flex --- because why not
        *    flex-col --- scrolling up and down
-       *    items-center --- center children horizontally //TODO: this might be a mistake, if you keep finding yourself overriding this then remove it
        *    w-full --- full width on smaller screens
        *    sm:mx-auto sm:w-[600px] md:w-[800px] --- centered and constrained width on screens
        *    px-4 --- padding on sides, especially the side with the scrollbar so it doesn't overlap content
        */}
-      <div className="flex w-full flex-col items-center px-4 sm:mx-auto sm:w-[600px] lg:w-[800px]">
+      <div className="flex w-full flex-col gap-2 px-4 sm:mx-auto sm:w-150 lg:w-200">
         {children}
         {isScrollToTopVisible && <ScrollToTopButton onClick={scrollToTop} />}
       </div>
