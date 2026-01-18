@@ -7,13 +7,15 @@ import Typography from "./ui/typography";
 
 export default function ListCard({ list }: { list: ListSummaryType }) {
   return (
-    <View className="h-[100px] w-full rounded-lg border border-white p-2">
-      <Link href={`/lists/${list.id}`}>
-        {/* <Pressable className="w-full rounded-lg border border-white p-2"> */}
-        <Typography variant={"heading"}>{list.name}</Typography>
-        <Typography variant={"muted"}>{list.description}</Typography>
-        {/* </Pressable> */}
-      </Link>
-    </View>
+    <Link href={`/lists/${list.id}`}>
+      <View className="h-35 w-full rounded-lg border border-white p-2">
+        <Typography variant={"heading"} className="line-clamp-1">
+          {list.name}
+        </Typography>
+        <Typography variant={"muted"} className="line-clamp-2">
+          {list.description}
+        </Typography>
+      </View>
+    </Link>
   );
 }

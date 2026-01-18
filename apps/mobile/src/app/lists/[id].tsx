@@ -3,7 +3,7 @@ import Typography from "~/components/ui/typography";
 
 export default function ListDetail() {
   return (
-    <Container>
+    <Container headerShown={true}>
       <Typography>List Detail Page</Typography>
     </Container>
   );

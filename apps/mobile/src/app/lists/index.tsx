@@ -25,8 +25,8 @@ export default function ListsPage() {
   }
 
   return (
-    <Container>
-      <ScrollView style={{ backgroundColor: "#000" }}>
+    <Container headerShown={true}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 400 }}>
         <View className="flex gap-2">
           {lists?.map((list) => (
             <ListCard key={list.id} list={list} />

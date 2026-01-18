@@ -27,26 +27,55 @@ export default function Container({
   className,
   variant,
   children,
+  headerShown,
   ...props
 }: React.ComponentProps<typeof TouchableWithoutFeedback> &
-  VariantProps<typeof containerVariants>) {
+  VariantProps<typeof containerVariants> & { headerShown?: boolean }) {
   return (
-    <SafeAreaView className={cn("bg-black", className)}>
-      <TouchableWithoutFeedback
-        onPress={() => Keyboard.dismiss()}
-        className={cn(containerVariants({ variant }), className)}
-        {...props}
-      >
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"} // 'padding' or 'height' often work well for formsheets
-          style={{ flex: 1 }} // Ensures the view takes up available space
-          contentContainerStyle={{ flexGrow: 1 }} // Useful if you have scrollable content
-        >
-          <View className={cn(containerVariants({ variant }), className)}>
+    <>
+      {headerShown ? (
+        // no need to include SafeAreaView since header is shown
+        <ContainerInternals className={className} variant={variant} {...props}>
+          {children}
+        </ContainerInternals>
+      ) : (
+        <SafeAreaView>
+          <ContainerInternals
+            className={className}
+            variant={variant}
+            {...props}
+          >
             {children}
-          </View>
-        </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
-    </SafeAreaView>
+          </ContainerInternals>
+        </SafeAreaView>
+      )}
+    </>
   );
 }
+
+const ContainerInternals = ({
+  className,
+  variant,
+  children,
+
+  ...props
+}: React.ComponentProps<typeof TouchableWithoutFeedback> &
+  VariantProps<typeof containerVariants>) => {
+  return (
+    <TouchableWithoutFeedback
+      onPress={() => Keyboard.dismiss()}
+      className={cn(containerVariants({ variant }), className)}
+      {...props}
+    >
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
+        <View className={cn(containerVariants({ variant }), className)}>
+          {children}
+        </View>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
+  );
+};
