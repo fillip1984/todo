@@ -26,10 +26,10 @@ export default function ListCard({ list }: { list: ListSummaryType }) {
 
   return (
     <Link href={`/lists/${list.id}`}>
-      <div className="hover:bg-foreground/10 flex rounded-lg border p-4 shadow-sm">
+      <div className="hover:bg-muted flex rounded-lg border p-4 shadow-sm">
         <div className="flex grow flex-col">
           <h2 className="line-clamp-2 text-lg font-semibold">{list.name}</h2>
-          <p className="line-clamp-3 text-sm text-gray-600">
+          <p className="text-muted-foreground line-clamp-3 text-sm">
             {list.description}
           </p>
         </div>

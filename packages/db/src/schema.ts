@@ -15,7 +15,8 @@ export const list = appSchema.table("list", (t) => ({
 
 export const task = appSchema.table("task", (t) => ({
   ...baseFields,
-  title: t.varchar({ length: 256 }).notNull(),
+  name: t.varchar({ length: 256 }).notNull(),
+  description: t.text(),
   complete: t.boolean().default(false).notNull(),
   listId: t
     .text()

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { and, eq } from "@todo/db";
 import { db } from "@todo/db/client";
-import { list } from "@todo/db/schema";
+import { list, task } from "@todo/db/schema";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
@@ -33,7 +33,9 @@ export const listRouter = createTRPCRouter({
       return await db.query.list.findFirst({
         where: and(eq(list.id, input.id), eq(list.userId, ctx.session.user.id)),
         with: {
-          tasks: true,
+          tasks: {
+            where: and(eq(task.complete, false), eq(task.listId, input.id)),
+          },
         },
       });
     }),
