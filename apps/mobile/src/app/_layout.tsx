@@ -48,10 +48,6 @@ export default function RootLayout() {
     setIsLoggedIn(!!session?.user);
   }, [session]);
 
-  // expo UI
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const pickerOptions = ["very", "veery", "veeery", "much"];
-
   return (
     <QueryClientProvider client={queryClient}>
       <Stack>
