@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { useQuery } from "@tanstack/react-query";
 
 import ListCard from "~/components/ListCard";
@@ -26,11 +26,13 @@ export default function ListsPage() {
 
   return (
     <Container>
-      <View className="flex gap-2">
-        {lists?.map((list) => (
-          <ListCard key={list.id} list={list} />
-        ))}
-      </View>
+      <ScrollView style={{ backgroundColor: "#000" }}>
+        <View className="flex gap-2">
+          {lists?.map((list) => (
+            <ListCard key={list.id} list={list} />
+          ))}
+        </View>
+      </ScrollView>
     </Container>
   );
 }

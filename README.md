@@ -6,12 +6,12 @@ A simple todo app that can be used as a template for all other projects
 
 This application is a monorepo containing a web application (currently NextJS), a mobile application (currently expo), and an packages directory containing shared projects. It is a simple todo app but it has all of the following features:
 
-- [ ] authentication, currently better-auth, works on both the web and mobile apps
-- [ ] a database, using supabase or docker postgres for local, is working within the web app (ORM is currently drizzle)
-- [ ] a shared API framework,currently trpc+tanstack query, is used in both the web and mobile apps
+- [x] authentication, currently better-auth, works on both the web and mobile apps
+- [x] a database, using supabase or docker postgres for local, is working within the web app (ORM is currently drizzle)
+- [x] a shared API framework,currently trpc+tanstack query, is used in both the web and mobile apps
 - [ ] a shared UI framework (plain tailwind+shadcn on the web side, and nativewind on mobile)
 - [ ] state management works in the mobile side (currently zustand)
-- [ ] eslint+prettier all works correctly with each other
+- [x] eslint+prettier all works correctly with each other
 - [ ] github actions builds and deploys the web app to an aws lambda
 
 ## Resources

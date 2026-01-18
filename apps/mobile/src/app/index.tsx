@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { ScrollView, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -22,21 +22,21 @@ export default function SocialSignIn() {
     });
   };
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#000000" }}>
+    <SafeAreaView>
       <Container>
-        {/* <View className="bg-background mt-8 flex h-screen items-center"> */}
-        <Text className="text-3xl text-white">Welcome to Todo</Text>
-        <Text className="mb-12 text-sm text-white">
-          This application is by invitation only...
-        </Text>
-        <TouchableOpacity
-          onPress={handleLogin}
-          className="flex flex-row items-center justify-center gap-8 rounded-lg border border-white p-6"
-        >
-          <AntDesign name="google" size={48} color={"white"} />
-          <Text className="text-4xl font-bold text-white">Google</Text>
-        </TouchableOpacity>
-        {/* </View> */}
+        <ScrollView>
+          <Text className="text-3xl text-white">Welcome to Todo</Text>
+          <Text className="mb-12 text-sm text-white">
+            This application is by invitation only...
+          </Text>
+          <TouchableOpacity
+            onPress={handleLogin}
+            className="flex flex-row items-center justify-center gap-8 rounded-lg border border-white p-6"
+          >
+            <AntDesign name="google" size={48} color={"white"} />
+            <Text className="text-4xl font-bold text-white">Google</Text>
+          </TouchableOpacity>
+        </ScrollView>
       </Container>
     </SafeAreaView>
   );

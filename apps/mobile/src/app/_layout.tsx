@@ -1,5 +1,5 @@
 import * as Network from "expo-network";
-import { Stack } from "expo-router";
+import { Link, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import {
   focusManager,
@@ -12,7 +12,9 @@ import "~/styles/global.css";
 
 import type { AppStateStatus } from "react-native";
 import { useEffect, useState } from "react";
-import { AppState, Platform } from "react-native";
+import { AppState, Platform, View } from "react-native";
+import { Button, ContextMenu, Host, Picker } from "@expo/ui/swift-ui";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
 import { queryClient } from "~/utils/api";
 import { authClient } from "~/utils/auth";
@@ -46,45 +48,102 @@ export default function RootLayout() {
     setIsLoggedIn(!!session?.user);
   }, [session]);
 
+  // expo UI
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const pickerOptions = ["very", "veery", "veeery", "much"];
+
   return (
     <QueryClientProvider client={queryClient}>
-      <Stack
-        screenOptions={{ headerShown: false }}
-        // screenOptions={{
-        //   header(props) {
-        //     return isLoggedIn ? <TopNav stackProps={props} /> : null;
-        //   },
-        // }}
-      >
+      <Stack>
+        {/* unsecurred locations */}
         <Stack.Screen name="index" />
 
+        {/* secured locations */}
         <Stack.Protected guard={isLoggedIn}>
-          <Stack.Screen name="lists/index" options={{ headerShown: false }} />
-          {/* <Stack.Screen name="areas/index" />
           <Stack.Screen
-            name="areas/[id]"
+            name="lists/index"
             options={{
-              presentation: "formSheet",
-              sheetAllowedDetents: [0.4, 0.8, 1.0],
-              sheetGrabberVisible: false,
-              // sheetCornerRadius: 10,
-              headerShown: false,
-              // sheetExpandsWhenScrolledToEdge: false,
+              headerStyle: {
+                backgroundColor: "#000",
+              },
+              headerBackVisible: false,
+              title: "",
+              headerRight: () => (
+                <Link href={"/lists/CreateListModal"}>
+                  <View className="px-4">
+                    <FontAwesome6 name="plus" size={24} color="white" />
+                  </View>
+                </Link>
+              ),
             }}
-          /> */}
-          {/* <Stack.Screen
-            name="settings/index"
+          />
+          <Stack.Screen
+            name="lists/CreateListModal"
             options={{
-              presentation: "formSheet",
-              sheetAllowedDetents: [0.4, 0.8, 1.0],
-              sheetGrabberVisible: false,
+              presentation: "modal",
               headerShown: false,
             }}
           />
-          <Stack.Screen name="results/index" /> */}
+          <Stack.Screen
+            name="lists/[id]"
+            options={{
+              headerStyle: {
+                backgroundColor: "#000",
+              },
+              headerTintColor: "#fff",
+              headerBackButtonDisplayMode: "minimal",
+              headerTitle: "",
+              headerRight: () => (
+                <Host
+                  style={{
+                    width: 40,
+                    height: 40,
+                  }}
+                >
+                  <ContextMenu>
+                    <ContextMenu.Items>
+                      <Button
+                        systemImage="person.crop.circle.badge.xmark"
+                        onPress={() => console.log("Pressed1")}
+                      >
+                        Hello
+                      </Button>
+                      <Button
+                        variant="bordered"
+                        systemImage="heart"
+                        onPress={() => console.log("Pressed2")}
+                      >
+                        Love it
+                      </Button>
+                      <Picker
+                        label="Doggos"
+                        options={pickerOptions}
+                        variant="menu"
+                        selectedIndex={selectedIndex}
+                        onOptionSelected={({ nativeEvent: { index } }) =>
+                          setSelectedIndex(index)
+                        }
+                      />
+                    </ContextMenu.Items>
+                    <ContextMenu.Trigger>
+                      <Button variant="plain">
+                        {/* TODO: having trouble centering icon inside of Button, involved a view to get it mostly correct */}
+                        <View className="flex items-center justify-center py-1">
+                          <FontAwesome6
+                            name="ellipsis-vertical"
+                            size={24}
+                            color="white"
+                          />
+                        </View>
+                      </Button>
+                    </ContextMenu.Trigger>
+                  </ContextMenu>
+                </Host>
+              ),
+            }}
+          />
         </Stack.Protected>
       </Stack>
-      {/* </AppContextProvider> */}
       <StatusBar style="light" />
     </QueryClientProvider>
   );
