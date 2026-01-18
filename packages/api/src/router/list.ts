@@ -4,6 +4,7 @@ import { and, eq } from "@todo/db";
 import { db } from "@todo/db/client";
 import { list, task } from "@todo/db/schema";
 
+import { auditFields } from "../root";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const listRouter = createTRPCRouter({
@@ -24,6 +25,7 @@ export const listRouter = createTRPCRouter({
   readAll: protectedProcedure.query(async ({ ctx }) => {
     return await db.query.list.findMany({
       where: eq(list.userId, ctx.session.user.id),
+      columns: auditFields,
     });
   }),
 
@@ -35,8 +37,10 @@ export const listRouter = createTRPCRouter({
         with: {
           tasks: {
             where: and(eq(task.complete, false), eq(task.listId, input.id)),
+            columns: auditFields,
           },
         },
+        columns: auditFields,
       });
     }),
 
