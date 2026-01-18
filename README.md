@@ -20,3 +20,10 @@ This application is a monorepo containing a web application (currently NextJS), 
   - not used directly because Turbo and SST don't mix. SST is used to deploy to aws
 - [T3 Stack](https://create.t3.gg)
   - not used directly because it isn't a monorepo and makes sharing things between a web and mobile app not possible
+
+## TODOs
+
+- [ ] finish crud operations in mobile app
+- [ ] try out skeleton loading screens
+  - [ ] try using suspense or loading concepts from nextjs+react or expo router
+- [ ] relearn expo routing and stacks. Try to make some more reusable components to ease working with React Native
