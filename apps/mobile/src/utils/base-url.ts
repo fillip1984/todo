@@ -1,4 +1,4 @@
-// import Constants from "expo-constants";
+import Constants from "expo-constants";
 
 /**
  * Extend this function when going to production by
@@ -13,16 +13,13 @@ export const getBaseUrl = () => {
    * **NOTE**: This is only for development. In production, you'll want to set the
    * baseUrl to your production API URL.
    */
-  // const debuggerHost = Constants.expoConfig?.hostUri;
-  // const localhost = debuggerHost?.split(":")[0];
-  // console.log({ debuggerHost: debuggerHost ?? "not found" });
-  // if (!localhost) {
-  //   // return "https://turbo.t3.gg";
-  //   throw new Error(
-  //     "Failed to get localhost. Please point to your production server.",
-  //   );
-  // }
-  // console.log({ localhost });
-  // return `http://${localhost}:3000`;
-  return "http://localhost:3000";
+  const debuggerHost = Constants.expoConfig?.hostUri;
+  const localhost = debuggerHost?.split(":")[0];
+
+  // TODO: we could grab the ip address of the debuggerHost but better-auth doesn't play nicely with it...
+  // or google doesn't like that we're using a url that doesn't match a registered oauth redirect url
+  const baseUrl = !localhost
+    ? "https://todo.illizen.com"
+    : "http://localhost:3000";
+  return baseUrl;
 };

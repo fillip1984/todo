@@ -39,7 +39,7 @@ export default function Container({
           {children}
         </ContainerInternals>
       ) : (
-        <SafeAreaView>
+        <SafeAreaView style={{ backgroundColor: "#000" }}>
           <ContainerInternals
             className={className}
             variant={variant}

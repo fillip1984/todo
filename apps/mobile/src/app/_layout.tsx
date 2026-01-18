@@ -12,8 +12,8 @@ import "~/styles/global.css";
 
 import type { AppStateStatus } from "react-native";
 import { useEffect, useState } from "react";
-import { AppState, Platform, View } from "react-native";
-import { Button, ContextMenu, Host, Picker } from "@expo/ui/swift-ui";
+import { AppState, Platform, Text, View } from "react-native";
+import { Button, ContextMenu, Host } from "@expo/ui/swift-ui";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
 import { queryClient } from "~/utils/api";
@@ -56,7 +56,12 @@ export default function RootLayout() {
     <QueryClientProvider client={queryClient}>
       <Stack>
         {/* unsecurred locations */}
-        <Stack.Screen name="index" />
+        <Stack.Screen
+          name="index"
+          options={{
+            headerShown: false,
+          }}
+        />
 
         {/* secured locations */}
         <Stack.Protected guard={isLoggedIn}>
@@ -68,6 +73,33 @@ export default function RootLayout() {
               },
               headerBackVisible: false,
               title: "",
+              headerLeft: () => (
+                <Host
+                  style={{
+                    width: 40,
+                    height: 40,
+                  }}
+                >
+                  <ContextMenu>
+                    <ContextMenu.Items>
+                      <Button
+                        systemImage="rectangle.portrait.and.arrow.forward"
+                        onPress={() => authClient.signOut()}
+                      >
+                        Sign out
+                      </Button>
+                    </ContextMenu.Items>
+                    <ContextMenu.Trigger>
+                      <Button variant="plain">
+                        {/* TODO: having trouble centering icon inside of Button, involved a view to get it mostly correct */}
+                        <View className="flex items-center justify-center py-1">
+                          <Text className="py-2 text-white">PW</Text>
+                        </View>
+                      </Button>
+                    </ContextMenu.Trigger>
+                  </ContextMenu>
+                </Host>
+              ),
               headerRight: () => (
                 <Link href={"/lists/CreateListModal"}>
                   <View className="px-4">
@@ -103,38 +135,22 @@ export default function RootLayout() {
                   <ContextMenu>
                     <ContextMenu.Items>
                       <Button
-                        systemImage="person.crop.circle.badge.xmark"
-                        onPress={() => console.log("Pressed1")}
+                        systemImage="trash"
+                        onPress={() => console.log("Delete list")}
                       >
-                        Hello
+                        Delete
                       </Button>
-                      <Button
-                        variant="bordered"
-                        systemImage="heart"
-                        onPress={() => console.log("Pressed2")}
-                      >
-                        Love it
-                      </Button>
-                      <Picker
-                        label="Doggos"
-                        options={pickerOptions}
-                        variant="menu"
-                        selectedIndex={selectedIndex}
-                        onOptionSelected={({ nativeEvent: { index } }) =>
-                          setSelectedIndex(index)
-                        }
-                      />
                     </ContextMenu.Items>
                     <ContextMenu.Trigger>
-                      <Button variant="plain">
+                      <Button variant="plain" systemImage="ellipsis">
                         {/* TODO: having trouble centering icon inside of Button, involved a view to get it mostly correct */}
-                        <View className="flex items-center justify-center py-1">
+                        {/* <View className="flex items-center justify-center py-1">
                           <FontAwesome6
                             name="ellipsis-vertical"
                             size={24}
                             color="white"
                           />
-                        </View>
+                        </View> */}
                       </Button>
                     </ContextMenu.Trigger>
                   </ContextMenu>
