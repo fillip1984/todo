@@ -6,10 +6,7 @@ import { authClient } from "~/auth/client";
 import { Button } from "./ui/button";
 
 export default function SignInView() {
-  const socialProviders = [
-    { label: "google", icon: <FaGoogle /> },
-    // { label: "github", icon: <FaGithub /> },
-  ];
+  const socialProviders = [{ label: "google", icon: <FaGoogle /> }];
 
   return (
     <div className="flex h-screen w-screen flex-col items-center pt-40">
@@ -31,32 +28,6 @@ export default function SignInView() {
             </Button>
           ))}
         </div>
-        {/* <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            void handleEmailSignIn();
-          }}
-          className="flex flex-col gap-2"
-        >
-          {emailError && <p className="text-destructive">{emailError}</p>}
-
-          <Input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email address"
-          />
-          <Input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-          />
-          <Button type="submit" className="w-full">
-            {emailLoginLoading && <FaCircleNotch className="animate-spin" />}
-            Sign in with Email
-          </Button>
-        </form> */}
       </div>
     </div>
   );

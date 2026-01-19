@@ -4,8 +4,10 @@ import { TRPCReactProvider } from "~/trpc/react";
 
 import "~/styles/globals.css";
 
+import { ThemeProvider } from "next-themes";
+
 import { getSession } from "~/auth/server";
-import { ThemeProvider, ThemeToggle } from "~/components/my-ui/themeToggle";
+import FAB from "~/components/fab";
 import SignInView from "~/components/SignInView";
 
 export const metadata: Metadata = {
@@ -42,7 +44,7 @@ const SignedIn = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
     <main className="relative flex h-screen overflow-hidden">
       {children}
-      <ThemeToggle />
+      <FAB />
     </main>
   );
 };

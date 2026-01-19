@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 import { and, eq } from "@todo/db";
-import { db } from "@todo/db/client";
 import { list, task } from "@todo/db/schema";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
@@ -15,14 +14,14 @@ export const listRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      return await db.insert(list).values({
+      return await ctx.db.insert(list).values({
         ...input,
         userId: ctx.session.user.id,
       });
     }),
 
   readAll: protectedProcedure.query(async ({ ctx }) => {
-    const results = db.query.list.findMany({
+    const results = ctx.db.query.list.findMany({
       where: eq(list.userId, ctx.session.user.id),
       columns: {
         createdAt: false,
@@ -52,7 +51,7 @@ export const listRouter = createTRPCRouter({
   readById: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
-      const result = await db.query.list.findFirst({
+      const result = await ctx.db.query.list.findFirst({
         where: and(eq(list.id, input.id), eq(list.userId, ctx.session.user.id)),
         with: {
           tasks: {
@@ -84,7 +83,7 @@ export const listRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const { id, ...data } = input;
-      return await db
+      return await ctx.db
         .update(list)
         .set(data)
         .where(and(eq(list.id, id), eq(list.userId, ctx.session.user.id)));
@@ -93,7 +92,7 @@ export const listRouter = createTRPCRouter({
   delete: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      return await db
+      return await ctx.db
         .delete(list)
         .where(
           and(eq(list.id, input.id), eq(list.userId, ctx.session.user.id)),
