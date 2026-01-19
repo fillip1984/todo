@@ -2,11 +2,15 @@ import { useEffect, useState } from "react";
 import {
   Pressable,
   ScrollView,
+  Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import Swipeable, {
+  SwipeDirection,
+} from "react-native-gesture-handler/ReanimatedSwipeable";
 import { router, useLocalSearchParams } from "expo-router";
 import { Button, ContextMenu, Host, HStack, Spacer } from "@expo/ui/swift-ui";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -141,6 +145,7 @@ const TaskSection = ({ list }: { list: ListDetailType }) => {
           </Typography>
         </View>
       </View>
+
       <ScrollView
         contentContainerStyle={{ paddingBottom: 400 }}
         showsVerticalScrollIndicator={false}
@@ -190,39 +195,74 @@ const TaskRow = ({ task }: { task: TaskType }) => {
       updateTask.mutate({ ...task, name, complete });
     }
   };
-  return (
-    <View className="mt-4 flex flex-row overflow-hidden rounded-2xl bg-zinc-700 px-4 py-3">
-      <BouncyCheckbox
-        isChecked={complete}
-        fillColor="blue"
-        onPress={(isChecked: boolean) => {
-          setComplete(isChecked);
-          handleUpdate(name, isChecked);
-        }}
-      />
 
-      {!isEditingName ? (
-        <Pressable onPress={() => setIsEditingName(true)}>
-          <Typography
-            variant={complete ? "muted" : "default"}
-            size="large"
-            className={complete ? "line-through" : ""}
-          >
-            {name}
-          </Typography>
-        </Pressable>
-      ) : (
-        <TextInput
-          value={name}
-          onChangeText={setName}
-          onBlur={() => {
-            setIsEditingName(false);
-            handleUpdate(name, complete);
+  const deleteTask = useMutation(
+    trpc.task.delete.mutationOptions({
+      onSuccess: () => {
+        void queryClient.invalidateQueries(trpc.list.pathFilter());
+      },
+    }),
+  );
+
+  return (
+    <Swipeable
+      friction={2}
+      enableTrackpadTwoFingerGesture
+      rightThreshold={60}
+      renderRightActions={RightAction}
+      onSwipeableOpen={(d) =>
+        d === SwipeDirection.LEFT && deleteTask.mutate({ id: task.id })
+      }
+      containerStyle={{ marginTop: 8 }}
+      childrenContainerStyle={{
+        display: "flex",
+        margin: 0,
+        padding: 0,
+        width: "100%",
+        flex: 1,
+      }}
+    >
+      <View className="flex flex-row overflow-hidden rounded-2xl bg-zinc-700 px-4 py-3">
+        <BouncyCheckbox
+          isChecked={complete}
+          fillColor="blue"
+          onPress={(isChecked: boolean) => {
+            setComplete(isChecked);
+            handleUpdate(name, isChecked);
           }}
-          autoFocus
-          className="flex-1 text-lg text-white"
         />
-      )}
-    </View>
+
+        {!isEditingName ? (
+          <Pressable onPress={() => setIsEditingName(true)}>
+            <Typography
+              variant={complete ? "muted" : "default"}
+              size="large"
+              className={complete ? "line-through" : ""}
+            >
+              {name}
+            </Typography>
+          </Pressable>
+        ) : (
+          <TextInput
+            value={name}
+            onChangeText={setName}
+            onBlur={() => {
+              setIsEditingName(false);
+              handleUpdate(name, complete);
+            }}
+            autoFocus
+            className="flex-1 text-lg text-white"
+          />
+        )}
+      </View>
+    </Swipeable>
   );
 };
+
+function RightAction() {
+  return (
+    <View className="flex w-full grow items-end justify-center rounded-2xl bg-red-600 pr-4 text-white">
+      <Text className="text-2xl font-bold text-white">Delete</Text>
+    </View>
+  );
+}

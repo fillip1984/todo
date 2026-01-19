@@ -1,3 +1,4 @@
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import * as Network from "expo-network";
 import { Link, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -50,77 +51,79 @@ export default function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Stack>
-        {/* unsecurred locations */}
-        <Stack.Screen
-          name="index"
-          options={{
-            headerShown: false,
-          }}
-        />
+      <GestureHandlerRootView>
+        <Stack>
+          {/* unsecurred locations */}
+          <Stack.Screen
+            name="index"
+            options={{
+              headerShown: false,
+            }}
+          />
 
-        {/* secured locations */}
-        <Stack.Protected guard={isLoggedIn}>
-          <Stack.Screen
-            name="lists/index"
-            options={{
-              headerStyle: {
-                backgroundColor: "#000",
-              },
-              headerBackVisible: false,
-              title: "",
-              headerLeft: () => (
-                <Host
-                  style={{
-                    width: 40,
-                    height: 40,
-                  }}
-                >
-                  <ContextMenu>
-                    <ContextMenu.Items>
-                      <Button
-                        systemImage="rectangle.portrait.and.arrow.forward"
-                        onPress={() => authClient.signOut()}
-                      >
-                        Sign out
-                      </Button>
-                    </ContextMenu.Items>
-                    <ContextMenu.Trigger>
-                      <Button variant="plain">
-                        {/* TODO: having trouble centering icon inside of Button, involved a view to get it mostly correct */}
-                        <View className="flex items-center justify-center py-1">
-                          <Text className="py-2 text-white">PW</Text>
-                        </View>
-                      </Button>
-                    </ContextMenu.Trigger>
-                  </ContextMenu>
-                </Host>
-              ),
-              headerRight: () => (
-                <Link href={"/lists/CreateListModal"}>
-                  <View className="px-4">
-                    <FontAwesome6 name="plus" size={24} color="white" />
-                  </View>
-                </Link>
-              ),
-            }}
-          />
-          <Stack.Screen
-            name="lists/CreateListModal"
-            options={{
-              presentation: "modal",
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="lists/[id]"
-            options={{
-              headerShown: false,
-            }}
-          />
-        </Stack.Protected>
-      </Stack>
-      <StatusBar style="light" />
+          {/* secured locations */}
+          <Stack.Protected guard={isLoggedIn}>
+            <Stack.Screen
+              name="lists/index"
+              options={{
+                headerStyle: {
+                  backgroundColor: "#000",
+                },
+                headerBackVisible: false,
+                title: "",
+                headerLeft: () => (
+                  <Host
+                    style={{
+                      width: 40,
+                      height: 40,
+                    }}
+                  >
+                    <ContextMenu>
+                      <ContextMenu.Items>
+                        <Button
+                          systemImage="rectangle.portrait.and.arrow.forward"
+                          onPress={() => authClient.signOut()}
+                        >
+                          Sign out
+                        </Button>
+                      </ContextMenu.Items>
+                      <ContextMenu.Trigger>
+                        <Button variant="plain">
+                          {/* TODO: having trouble centering icon inside of Button, involved a view to get it mostly correct */}
+                          <View className="flex items-center justify-center py-1">
+                            <Text className="py-2 text-white">PW</Text>
+                          </View>
+                        </Button>
+                      </ContextMenu.Trigger>
+                    </ContextMenu>
+                  </Host>
+                ),
+                headerRight: () => (
+                  <Link href={"/lists/CreateListModal"}>
+                    <View className="px-4">
+                      <FontAwesome6 name="plus" size={24} color="white" />
+                    </View>
+                  </Link>
+                ),
+              }}
+            />
+            <Stack.Screen
+              name="lists/CreateListModal"
+              options={{
+                presentation: "modal",
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="lists/[id]"
+              options={{
+                headerShown: false,
+              }}
+            />
+          </Stack.Protected>
+        </Stack>
+        <StatusBar style="light" />
+      </GestureHandlerRootView>
     </QueryClientProvider>
   );
 }
