@@ -161,7 +161,10 @@ const TaskSection = ({ list }: { list: ListDetailType }) => {
           className="mt-1 rounded-2xl bg-blue-600 px-4 py-3"
           onPress={() => createTask.mutate({ name: taskName, listId: list.id })}
         >
-          <Typography className="text-center text-2xl font-bold text-white">
+          <Typography
+            className="text-center text-2xl font-bold text-white"
+            disabled={!taskName.trim()}
+          >
             Add Task
           </Typography>
         </TouchableOpacity>
@@ -182,6 +185,11 @@ const TaskRow = ({ task }: { task: TaskType }) => {
       },
     }),
   );
+  const handleUpdate = (name: string, complete: boolean) => {
+    if (name !== task.name || complete !== task.complete) {
+      updateTask.mutate({ ...task, name, complete });
+    }
+  };
   return (
     <View className="mt-4 flex flex-row overflow-hidden rounded-2xl bg-zinc-700 px-4 py-3">
       <BouncyCheckbox
@@ -189,7 +197,7 @@ const TaskRow = ({ task }: { task: TaskType }) => {
         fillColor="blue"
         onPress={(isChecked: boolean) => {
           setComplete(isChecked);
-          updateTask.mutate({ ...task, name, complete: isChecked });
+          handleUpdate(name, isChecked);
         }}
       />
 
@@ -209,7 +217,7 @@ const TaskRow = ({ task }: { task: TaskType }) => {
           onChangeText={setName}
           onBlur={() => {
             setIsEditingName(false);
-            updateTask.mutate({ ...task, name });
+            handleUpdate(name, complete);
           }}
           autoFocus
           className="flex-1 text-lg text-white"
