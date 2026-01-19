@@ -23,9 +23,9 @@ This application is a monorepo containing a web application (currently NextJS), 
 
 ## TODOs
 
-- [x] finish crud operations in mobile app
-- [ ] try out skeleton loading screens
-  - [ ] try using suspense or loading concepts from nextjs+react or expo router
+- [ ] fix light mode or figure out how to properly theme shadcn
+- [ ] create reusable select/combo boxes
+- [ ] create reusable text and textarea editing in place components
 
 ## Stretch TODOs
 

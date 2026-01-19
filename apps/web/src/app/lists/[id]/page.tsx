@@ -63,7 +63,7 @@ export default function ListDetails({
       </div>
 
       <div className="rounded-xl bg-gray-800 p-4">
-        <div className="mt-4 flex items-center justify-between">
+        <div className="mb-2 flex items-center justify-between">
           <h5>Tasks</h5>
           <Badge variant="secondary">
             {list.tasks.filter((t) => t.complete).length}/{list.tasks.length}{" "}

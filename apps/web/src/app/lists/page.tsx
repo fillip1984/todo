@@ -89,7 +89,7 @@ export default function HomePage() {
     <Container>
       <div className="rounded-xl bg-gray-800 p-4">
         <div className="flex flex-col gap-2">
-          <AnimatePresence initial={false}>
+          <AnimatePresence>
             {lists?.map((list) => (
               <motion.div
                 key={list.id}
