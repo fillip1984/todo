@@ -30,7 +30,11 @@ export default function TaskCard({ task }: { task: TaskType }) {
   };
   return (
     <div className="flex items-center gap-2 border-b py-2">
-      <Checkbox checked={complete} onCheckedChange={handleComplete} />
+      <Checkbox
+        checked={complete}
+        onCheckedChange={handleComplete}
+        className="h-6 w-6"
+      />
       <div>
         <p className={`font-semibold ${complete ? "line-through" : ""}`}>
           {task.name}

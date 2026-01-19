@@ -15,6 +15,7 @@ import ProgressBadge from "~/components/my-ui/progress-badge";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { useTRPC } from "~/trpc/react";
+import { calculateProgress } from "~/utils/progress-utils";
 
 export default function ListDetails({
   params,
@@ -54,7 +55,13 @@ export default function ListDetails({
 
       <div className="rounded-xl bg-gray-800 p-4">
         <div className="flex items-center gap-2">
-          <ProgressBadge progress={65} icon={<MdLocalMovies />} />
+          <ProgressBadge
+            progress={calculateProgress({
+              completed: list.tasks.filter((t) => t.complete).length,
+              total: list.tasks.length,
+            })}
+            icon={<MdLocalMovies />}
+          />
           <h5>{list.name}</h5>
         </div>
         <div className="rounded-lg border-2 px-1 py-4">

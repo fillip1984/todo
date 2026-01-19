@@ -5,6 +5,7 @@ import { BrushCleaning, EllipsisVertical, Trash } from "lucide-react";
 import type { ListSummaryType } from "@todo/api";
 
 import { useTRPC } from "~/trpc/react";
+import { calculateProgress } from "~/utils/progress-utils";
 import ProgressBadge from "../my-ui/progress-badge";
 import { Button } from "../ui/button";
 import {
@@ -28,7 +29,13 @@ export default function ListCard({ list }: { list: ListSummaryType }) {
   return (
     <Link href={`/lists/${list.id}`}>
       <div className="flex items-center rounded-lg border px-2 shadow-sm transition-colors ease-in-out hover:bg-gray-700">
-        <ProgressBadge progress={65} icon={<BrushCleaning />} />
+        <ProgressBadge
+          progress={calculateProgress({
+            completed: list.completedTaskCount,
+            total: list.taskCount,
+          })}
+          icon={<BrushCleaning />}
+        />
         <div className="flex max-w-[75%] grow flex-col">
           <h2 className="line-clamp-1 text-lg font-semibold">{list.name}</h2>
           <p className="text-muted-foreground line-clamp-2 text-sm">

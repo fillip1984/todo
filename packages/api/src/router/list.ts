@@ -22,7 +22,7 @@ export const listRouter = createTRPCRouter({
     }),
 
   readAll: protectedProcedure.query(async ({ ctx }) => {
-    return await db.query.list.findMany({
+    const results = db.query.list.findMany({
       where: eq(list.userId, ctx.session.user.id),
       columns: {
         createdAt: false,
@@ -30,6 +30,22 @@ export const listRouter = createTRPCRouter({
         userId: false,
       },
     });
+    // TODO: there's a bug in drizzle for performing counts on child objects,
+    // check back once drizzle 1.0 drops
+    const listsWithTaskCount = (await results).map(async (listItem) => {
+      const tasks = await ctx.db.query.task.findMany({
+        where: eq(task.listId, listItem.id),
+        columns: {
+          id: true,
+          complete: true,
+        },
+      });
+      const taskCount = tasks.length;
+      const completedTaskCount = tasks.filter((task) => task.complete).length;
+      return { ...listItem, taskCount, completedTaskCount };
+    });
+
+    return Promise.all(listsWithTaskCount);
   }),
 
   readById: protectedProcedure
