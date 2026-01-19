@@ -1,0 +1,59 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      # Looks like maintaining (restoring and saving updated cache) nextjs cache takes close to 1 minute (24s to restore and 40'ish to save off) .
+      # If your nextjs build is shorter than that then there is no benefit here
+      # - name: Cache Next.js build
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: ${{ github.workspace }}/.next/cache
+      #     # Generate a new cache whenever packages or source files change.
+      #     key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+      #     # If source files changed but packages didn't, rebuild from a prior cache.
+      #     restore-keys: |
+      #       ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
+
+      # Waiting on fix for: https://github.com/anomalyco/sst/issues/6314
+      - name: Add SST's bin directory to PATH
+        # Writing to $GITHUB_PATH causes GitHub Actions to prepend this directory to PATH,
+        # ensuring SST's version of Pulumi is found before GitHub Actions' version
+        run: echo "$HOME/.config/sst/bin" >> $GITHUB_PATH
+
+      - name: Build and Deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
+          POSTGRES_SCHEMA: "todo"
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+          AUTH_DISABLE_SIGN_UPS: "false"
+          AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
+          AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
+          AUTH_TRUST_HOST: "true"
+          PRODUCTION_URL: "https://todo.illizen.com"
+        run: |
+          pnpx sst deploy --stage prod

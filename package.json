@@ -7,13 +7,13 @@
   },
   "packageManager": "pnpm@10.19.0",
   "scripts": {
+    "auth:generate": "pnpm -F @todo/auth generate",
     "build": "pnpm -r build",
-    "build:packages": "pnpm -F '!./apps/**' run build",
     "build:mobile": "pnpm -F !web run build:production",
+    "build:packages": "pnpm -F '!./apps/**' run build",
     "build:web": "pnpm -F !mobile run build",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "pnpm -r clean",
-    "auth:generate": "pnpm -F @todo/auth generate",
     "db:push": "pnpm -F @todo/db push",
     "db:studio": "pnpm -F @todo/db studio",
     "dev": "pnpm -r run dev",
@@ -31,9 +31,13 @@
   },
   "devDependencies": {
     "@todo/prettier-config": "workspace:*",
+    "@types/aws-lambda": "8.10.159",
     "dotenv-cli": "^11.0.0",
     "prettier": "^3.8.0",
     "typescript": "^5.9.3"
   },
-  "prettier": "@todo/prettier-config"
+  "prettier": "@todo/prettier-config",
+  "dependencies": {
+    "sst": "3.17.25"
+  }
 }
