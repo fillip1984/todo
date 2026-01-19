@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { ScrollView, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Pressable,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { router, useLocalSearchParams } from "expo-router";
 import { Button, ContextMenu, Host, HStack, Spacer } from "@expo/ui/swift-ui";
@@ -125,8 +131,20 @@ const TaskSection = ({ list }: { list: ListDetailType }) => {
 
   return (
     <View className="mt-4">
-      <Typography className="text-4xl">Tasks</Typography>
-      <ScrollView contentContainerStyle={{ paddingBottom: 400 }}>
+      <View className="flex flex-row items-center justify-between">
+        <Typography className="text-4xl">Tasks</Typography>
+        <View className="rounded-full bg-zinc-800 px-2 py-1">
+          <Typography className="text-lg text-zinc-400">
+            {list.tasks.filter((t) => !t.complete).length}/{list.tasks.length}{" "}
+            task
+            {list.tasks.length !== 1 ? "s" : ""}
+          </Typography>
+        </View>
+      </View>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 400 }}
+        showsVerticalScrollIndicator={false}
+      >
         {list.tasks.map((task) => (
           <TaskRow key={task.id} task={task} />
         ))}
@@ -154,8 +172,10 @@ const TaskSection = ({ list }: { list: ListDetailType }) => {
 
 const TaskRow = ({ task }: { task: TaskType }) => {
   const [complete, setComplete] = useState(task.complete);
+  const [name, setName] = useState(task.name);
+  const [isEditingName, setIsEditingName] = useState(false);
 
-  const completeTask = useMutation(
+  const updateTask = useMutation(
     trpc.task.update.mutationOptions({
       onSuccess: () => {
         void queryClient.invalidateQueries(trpc.list.pathFilter());
@@ -169,16 +189,32 @@ const TaskRow = ({ task }: { task: TaskType }) => {
         fillColor="blue"
         onPress={(isChecked: boolean) => {
           setComplete(isChecked);
-          completeTask.mutate({ ...task, complete: isChecked });
+          updateTask.mutate({ ...task, name, complete: isChecked });
         }}
       />
-      <Typography
-        variant={complete ? "muted" : "default"}
-        size="large"
-        className={complete ? "line-through" : ""}
-      >
-        {task.name}
-      </Typography>
+
+      {!isEditingName ? (
+        <Pressable onPress={() => setIsEditingName(true)}>
+          <Typography
+            variant={complete ? "muted" : "default"}
+            size="large"
+            className={complete ? "line-through" : ""}
+          >
+            {name}
+          </Typography>
+        </Pressable>
+      ) : (
+        <TextInput
+          value={name}
+          onChangeText={setName}
+          onBlur={() => {
+            setIsEditingName(false);
+            updateTask.mutate({ ...task, name });
+          }}
+          autoFocus
+          className="flex-1 text-lg text-white"
+        />
+      )}
     </View>
   );
 };
