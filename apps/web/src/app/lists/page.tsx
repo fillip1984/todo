@@ -49,12 +49,14 @@ export default function HomePage() {
             <Skeleton className="h-10 w-full" />
           </div>
         </Container>
-        {/* Experimenting with skeletons */}
-        <LoadingAndRetry
-          isLoading={false}
-          isError={isError}
-          retry={() => void refetch()}
-        />
+        {/* Experimenting with skeletons, leaving this for retrying errors */}
+        {isError && (
+          <LoadingAndRetry
+            isLoading={false}
+            isError={isError}
+            retry={() => void refetch()}
+          />
+        )}
       </>
     );
   }

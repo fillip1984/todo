@@ -24,7 +24,7 @@ export function ThemeToggle() {
   };
 
   return (
-    <div className="absolute right-4 bottom-4">
+    <div className="fixed right-4 bottom-4">
       <Button variant="outline" size="icon" onClick={handleThemeToggle}>
         {theme === "light" ? (
           <SunIcon />

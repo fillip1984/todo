@@ -3,6 +3,7 @@ import { FaExclamationTriangle } from "react-icons/fa";
 
 import { Button } from "../ui/button";
 import { Spinner } from "../ui/spinner";
+import Container from "./container";
 
 export default function LoadingAndRetry({
   isLoading,
@@ -14,7 +15,7 @@ export default function LoadingAndRetry({
   retry: () => void;
 }) {
   return (
-    <div className="mt-12 flex h-screen flex-col items-center">
+    <Container className="mt-12">
       {isLoading && <Spinner className="mx-auto h-24 w-24" />}
 
       {isError && (
@@ -42,6 +43,6 @@ export default function LoadingAndRetry({
           </div>
         </div>
       )}
-    </div>
+    </Container>
   );
 }
