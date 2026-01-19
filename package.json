@@ -17,8 +17,6 @@
     "db:push": "pnpm -F @todo/db push",
     "db:studio": "pnpm -F @todo/db studio",
     "dev": "pnpm -r run dev",
-    "dev:ios": "pnpm -F mobile run ios",
-    "dev:web": "pnpm -F web run dev",
     "format": "pnpm -r format",
     "format:fix": "pnpm -r format",
     "ios": "pnpm -F mobile run ios",
@@ -26,7 +24,7 @@
     "lint:fix": "pnpm -r lint",
     "lint:ws": "pnpm dlx sherif@latest",
     "preinstall": "npx only-allow pnpm",
-    "prod:db:push": "pnpm dotenv -e .env.prod -- drizzle-kit push",
+    "prod:db:push": "pnpm -F @todo/db push:prod",
     "prod:deploy": "pnpm dotenv -e .env.prod -- sst deploy --stage prod",
     "prod:nuke": "pnpm dotenv -e .env.prod -- sst remove --stage prod",
     "typecheck": "pnpm -r typecheck"

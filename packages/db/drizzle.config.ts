@@ -10,6 +10,7 @@ if (!process.env.POSTGRES_SCHEMA) {
 
 const nonPoolingUrl = process.env.POSTGRES_URL.replace(":6543", ":5432");
 
+// TODO: you have to change dbCredentials to individual sections to work on prod: https://github.com/drizzle-team/drizzle-orm/issues/4527
 export default {
   schema: "./src/schema.ts",
   dialect: "postgresql",

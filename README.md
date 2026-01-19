@@ -23,7 +23,10 @@ This application is a monorepo containing a web application (currently NextJS), 
 
 ## TODOs
 
-- [ ] finish crud operations in mobile app
+- [x] finish crud operations in mobile app
 - [ ] try out skeleton loading screens
   - [ ] try using suspense or loading concepts from nextjs+react or expo router
-- [ ] relearn expo routing and stacks. Try to make some more reusable components to ease working with React Native
+
+## Stretch TODOs
+
+- [ ] Identify and create reusable components to ease working with React Native
