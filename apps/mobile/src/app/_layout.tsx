@@ -115,43 +115,7 @@ export default function RootLayout() {
           <Stack.Screen
             name="lists/[id]"
             options={{
-              headerStyle: {
-                backgroundColor: "#000",
-              },
-              headerTintColor: "#fff",
-              headerBackButtonDisplayMode: "minimal",
-              headerTitle: "",
-              headerRight: () => (
-                <Host
-                  style={{
-                    width: 40,
-                    height: 40,
-                  }}
-                >
-                  <ContextMenu>
-                    <ContextMenu.Items>
-                      <Button
-                        systemImage="trash"
-                        onPress={() => console.log("Delete list")}
-                      >
-                        Delete
-                      </Button>
-                    </ContextMenu.Items>
-                    <ContextMenu.Trigger>
-                      <Button variant="plain" systemImage="ellipsis">
-                        {/* TODO: having trouble centering icon inside of Button, involved a view to get it mostly correct */}
-                        {/* <View className="flex items-center justify-center py-1">
-                          <FontAwesome6
-                            name="ellipsis-vertical"
-                            size={24}
-                            color="white"
-                          />
-                        </View> */}
-                      </Button>
-                    </ContextMenu.Trigger>
-                  </ContextMenu>
-                </Host>
-              ),
+              headerShown: false,
             }}
           />
         </Stack.Protected>

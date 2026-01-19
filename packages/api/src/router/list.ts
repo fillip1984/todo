@@ -35,11 +35,12 @@ export const listRouter = createTRPCRouter({
   readById: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
-      return await db.query.list.findFirst({
+      const result = await db.query.list.findFirst({
         where: and(eq(list.id, input.id), eq(list.userId, ctx.session.user.id)),
         with: {
           tasks: {
-            where: and(eq(task.complete, false), eq(task.listId, input.id)),
+            where: eq(task.listId, input.id),
+            orderBy: (task, { asc }) => [asc(task.createdAt)],
             columns: {
               createdAt: false,
               updatedAt: false,
@@ -53,6 +54,7 @@ export const listRouter = createTRPCRouter({
           userId: false,
         },
       });
+      return result ?? null;
     }),
 
   update: protectedProcedure
