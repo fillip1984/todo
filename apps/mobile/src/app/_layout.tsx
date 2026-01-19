@@ -44,7 +44,7 @@ export default function RootLayout() {
   const { data: session } = authClient.useSession();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
-    console.log("Session changed:", session);
+    // console.log("Session changed:", session);
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsLoggedIn(!!session?.user);
   }, [session]);
