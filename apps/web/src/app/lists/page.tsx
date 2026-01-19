@@ -68,22 +68,29 @@ export default function HomePage() {
   // default view
   return (
     <Container>
-      <AnimatePresence>
-        {lists?.map((list) => (
-          <motion.div
-            key={list.id}
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{
-              delayChildren: 0.2,
-            }}
-          >
-            <ListCard list={list} />
-          </motion.div>
-        ))}
-      </AnimatePresence>
-      <CreateList />
+      <div className="rounded-xl bg-gray-800 p-4">
+        <div className="flex flex-col gap-2">
+          <AnimatePresence>
+            {lists?.map((list) => (
+              <motion.div
+                key={list.id}
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{
+                  delayChildren: 0.2,
+                }}
+              >
+                <ListCard list={list} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
+      </div>
+
+      <div className="rounded-xl bg-gray-800 p-4">
+        <CreateList />
+      </div>
     </Container>
   );
 }
