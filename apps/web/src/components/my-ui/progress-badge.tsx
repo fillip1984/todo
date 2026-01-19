@@ -1,4 +1,3 @@
-import type { Variants } from "motion/react";
 import { motion } from "motion/react";
 
 export default function ProgressBadge({
@@ -8,24 +7,8 @@ export default function ProgressBadge({
   progress: number;
   icon: React.ReactNode;
 }) {
-  const pathLength = progress / 100;
-  const draw: Variants = {
-    hidden: { pathLength: 0, opacity: 0 },
-    visible: () => {
-      return {
-        pathLength: pathLength,
-        opacity: 1,
-        transition: {
-          pathLength: {
-            type: "spring",
-            duration: 1.5,
-            bounce: 0.3,
-          },
-          opacity: { duration: 0.01 },
-        },
-      };
-    },
-  };
+  const circumference = 2 * Math.PI * 45; // circumference = 2πr, where r = 45
+  const offset = circumference - (progress / 100) * circumference;
 
   return (
     <div>
@@ -56,10 +39,19 @@ export default function ProgressBadge({
             fill="none"
             stroke="currentColor"
             strokeWidth="8"
-            pathLength={pathLength}
+            strokeDasharray={circumference}
+            strokeDashoffset={offset}
             strokeLinecap="round"
             className="text-green-500"
-            variants={draw}
+            initial={{ strokeDashoffset: circumference, opacity: 0 }}
+            animate={{ strokeDashoffset: offset, opacity: 1 }}
+            transition={{
+              duration: 0.5,
+              delay: 0.2,
+              ease: "easeOut",
+              type: "spring",
+              bounce: progress > 5 && progress < 95 ? 0.3 : 0, // <-- overshooting causes visual glitches at extreme values
+            }}
           />
         </motion.svg>
 
