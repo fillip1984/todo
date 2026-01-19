@@ -12,7 +12,7 @@ This application is a monorepo containing a web application (currently NextJS), 
 - [ ] a shared UI framework (plain tailwind+shadcn on the web side, and nativewind on mobile)
 - [ ] state management works in the mobile side (currently zustand)
 - [x] eslint+prettier all works correctly with each other
-- [ ] github actions builds and deploys the web app to an aws lambda
+- [x] github actions builds and deploys the web app to an aws lambda
 
 ## Resources
 
