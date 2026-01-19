@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { cn } from "~/lib/utils";
 import { Textarea } from "../ui/textarea";
@@ -15,6 +15,19 @@ export default function TextFieldEditInPlace({
   className?: string;
 }) {
   const [isEditing, setIsEditing] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  useEffect(() => {
+    if (isEditing) {
+      if (textareaRef.current) {
+        // set cursor at the end of existing text
+        textareaRef.current.focus();
+        textareaRef.current.setSelectionRange(
+          textareaRef.current.value.length,
+          textareaRef.current.value.length,
+        );
+      }
+    }
+  }, [isEditing]);
 
   return (
     <>
@@ -26,7 +39,7 @@ export default function TextFieldEditInPlace({
             setIsEditing(false);
             onBlur();
           }}
-          autoFocus
+          ref={textareaRef}
           className={cn("w-full resize-none select-none", className)}
         />
       ) : (
@@ -34,7 +47,7 @@ export default function TextFieldEditInPlace({
           onClick={() => setIsEditing(true)}
           className="w-full cursor-pointer"
         >
-          {value}
+          {value.trim().length > 0 ? value : "No description"}
         </div>
       )}
     </>

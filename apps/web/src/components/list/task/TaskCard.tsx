@@ -24,6 +24,24 @@ export default function TaskCard({ task }: { task: TaskType }) {
       },
     }),
   );
+  const handleTaskUpdate = () => {
+    // only update if changes were made
+    console.log("handleTaskUpdate", {
+      name,
+      nameEqual: name === task.name,
+      description,
+      descriptionEqual: description === task.description,
+      complete,
+      completeEqual: complete === task.complete,
+    });
+    if (
+      name !== task.name ||
+      description !== task.description ||
+      complete !== task.complete
+    ) {
+      updateTask.mutate({ ...task, name, description, complete });
+    }
+  };
   const handleComplete = () => {
     const newState = !complete;
     setComplete(newState);
@@ -51,25 +69,21 @@ export default function TaskCard({ task }: { task: TaskType }) {
         className="h-6 w-6"
       />
       <div className="w-full">
-        <p className={`font-semibold ${complete ? "line-through" : ""}`}>
+        <div className={`font-semibold ${complete ? "line-through" : ""}`}>
           <TextFieldEditInPlace
             value={name}
             onChange={setName}
-            onBlur={() => {
-              updateTask.mutate({ ...task, name });
-            }}
+            onBlur={handleTaskUpdate}
             className="min-h-0"
           />
-        </p>
-        <p className="text-muted-foreground text-sm">
+        </div>
+        <div className="text-muted-foreground text-sm">
           <TextFieldEditInPlace
             value={description}
             onChange={setDescription}
-            onBlur={() => {
-              updateTask.mutate({ ...task, description });
-            }}
+            onBlur={handleTaskUpdate}
           />
-        </p>
+        </div>
       </div>
       <Trash className="text-destructive" onClick={handleDeleteTask} />
     </div>

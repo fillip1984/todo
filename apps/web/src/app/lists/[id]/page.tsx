@@ -50,6 +50,13 @@ export default function ListDetails({
       },
     }),
   );
+  const handleListUpdate = () => {
+    if (!list) return;
+    // only update if changes were made
+    if (name !== list.name || description !== list.description) {
+      updateList.mutate({ ...list, name, description });
+    }
+  };
 
   if (isLoading || isError) {
     return (
@@ -86,18 +93,18 @@ export default function ListDetails({
             <TextFieldEditInPlace
               value={name}
               onChange={setName}
-              onBlur={() => updateList.mutate({ ...list, name })}
+              onBlur={handleListUpdate}
             />
           </h5>
         </div>
 
-        <p className="text-muted-foreground">
+        <div className="text-muted-foreground">
           <TextFieldEditInPlace
             value={description}
             onChange={setDescription}
-            onBlur={() => updateList.mutate({ ...list, description })}
+            onBlur={handleListUpdate}
           />
-        </p>
+        </div>
       </div>
 
       <div className="rounded-xl bg-gray-800 p-4">
