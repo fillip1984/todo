@@ -1,8 +1,8 @@
 "use client";
 
-import { use } from "react";
+import { use, useEffect, useState } from "react";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowBigLeft } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { MdLocalMovies } from "react-icons/md";
@@ -11,7 +11,8 @@ import CreateTask from "~/components/list/task/CreateTask";
 import TaskCard from "~/components/list/task/TaskCard";
 import Container from "~/components/my-ui/container";
 import LoadingAndRetry from "~/components/my-ui/loadingAndRetry";
-import ProgressBadge from "~/components/my-ui/progress-badge";
+import ProgressBadge from "~/components/my-ui/progressBadge";
+import TextFieldEditInPlace from "~/components/my-ui/textFieldEditInPlace";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { useTRPC } from "~/trpc/react";
@@ -30,6 +31,25 @@ export default function ListDetails({
     isError,
     refetch,
   } = useQuery(trpc.list.readById.queryOptions({ id }));
+
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  useEffect(() => {
+    if (list) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setName(list.name);
+      setDescription(list.description ?? "");
+    }
+  }, [list]);
+
+  const queryClient = useQueryClient();
+  const updateList = useMutation(
+    trpc.list.update.mutationOptions({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(trpc.list.pathFilter());
+      },
+    }),
+  );
 
   if (isLoading || isError) {
     return (
@@ -62,11 +82,22 @@ export default function ListDetails({
             })}
             icon={<MdLocalMovies />}
           />
-          <h5>{list.name}</h5>
+          <h5 className="w-full">
+            <TextFieldEditInPlace
+              value={name}
+              onChange={setName}
+              onBlur={() => updateList.mutate({ ...list, name })}
+            />
+          </h5>
         </div>
-        <div className="rounded-lg border-2 px-1 py-4">
-          <p className="text-muted-foreground">{list.description}</p>
-        </div>
+
+        <p className="text-muted-foreground">
+          <TextFieldEditInPlace
+            value={description}
+            onChange={setDescription}
+            onBlur={() => updateList.mutate({ ...list, description })}
+          />
+        </p>
       </div>
 
       <div className="rounded-xl bg-gray-800 p-4">

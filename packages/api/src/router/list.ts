@@ -29,6 +29,7 @@ export const listRouter = createTRPCRouter({
         updatedAt: false,
         userId: false,
       },
+      orderBy: (list, { asc }) => [asc(list.name)],
     });
     // TODO: there's a bug in drizzle for performing counts on child objects,
     // check back once drizzle 1.0 drops
@@ -78,7 +79,7 @@ export const listRouter = createTRPCRouter({
       z.object({
         id: z.string(),
         name: z.string().min(1),
-        description: z.string().optional(),
+        description: z.string().nullish(),
       }),
     )
     .mutation(async ({ ctx, input }) => {

@@ -6,7 +6,7 @@ import type { ListSummaryType } from "@todo/api";
 
 import { useTRPC } from "~/trpc/react";
 import { calculateProgress } from "~/utils/progress-utils";
-import ProgressBadge from "../my-ui/progress-badge";
+import ProgressBadge from "../my-ui/progressBadge";
 import { Button } from "../ui/button";
 import {
   DropdownMenu,

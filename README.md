@@ -25,7 +25,6 @@ This application is a monorepo containing a web application (currently NextJS), 
 
 - [ ] fix light mode or figure out how to properly theme shadcn
 - [ ] create reusable select/combo boxes
-- [ ] create reusable text and textarea editing in place components
 
 ## Stretch TODOs
 

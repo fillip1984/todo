@@ -58,9 +58,12 @@ export default function Container({
        *    sm:mx-auto sm:w-[600px] md:w-[800px] --- centered and constrained width on screens
        *    px-4 --- padding on sides, especially the side with the scrollbar so it doesn't overlap content
        */}
-      <div className="flex w-full flex-col gap-2 px-4 sm:mx-auto sm:w-150 lg:w-200">
+      <div className="mb-24 flex w-full grow flex-col gap-2 px-4 sm:mx-auto sm:w-150 lg:w-200">
         {children}
         {isScrollToTopVisible && <ScrollToTopButton onClick={scrollToTop} />}
+        <div className="h-48 shrink-0">
+          {/* Spacer to ensure content doesn't rest on the browser frame */}
+        </div>
       </div>
     </div>
   );

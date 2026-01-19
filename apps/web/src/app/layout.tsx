@@ -40,9 +40,9 @@ export default async function RootLayout({
 
 const SignedIn = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
-    <div className="relative flex h-screen overflow-hidden">
-      <main className="grow">{children}</main>
+    <main className="relative flex h-screen overflow-hidden">
+      {children}
       <ThemeToggle />
-    </div>
+    </main>
   );
 };

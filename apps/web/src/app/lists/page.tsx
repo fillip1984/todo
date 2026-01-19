@@ -86,7 +86,7 @@ export default function HomePage() {
 
   // default view
   return (
-    <Container>
+    <Container scrollToTopButton={true}>
       <div className="rounded-xl bg-gray-800 p-4">
         <div className="flex flex-col gap-2">
           <AnimatePresence>
