@@ -18,6 +18,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
 const comboboxVariants = cva("justify-between font-normal");
 
+{
+  /* TODO: replace custom combobox with shadcn once bugs cool down, currently you can't select items if the combobox is on a dialog */
+}
 export default function Combobox({
   value,
   setValue,
@@ -27,7 +30,7 @@ export default function Combobox({
   className,
   ...props
 }: React.ComponentProps<"button"> & {
-  value: string | null;
+  value: string | null | undefined;
   setValue: (value: string | null) => void;
   options: { id: string | null; label: string }[];
   searchable?: boolean;
@@ -43,10 +46,29 @@ export default function Combobox({
           className={cn(comboboxVariants({ className }))}
           {...props}
         >
-          {options.find((o) => o.id === value)?.label ??
-            placeholder ??
-            "Select an option"}
-          <ChevronDownIcon />
+          {/* show placeholder when no value selected */}
+          {value ? (
+            options.find((o) => o.id === value)?.label
+          ) : (
+            <span className="text-muted-foreground">
+              {placeholder ?? "Select an option"}
+            </span>
+          )}
+
+          {/* sets chip at end, either x (to clear value) or chevron (to indicate dropdown) */}
+          {value ? (
+            <span
+              onClick={(e) => {
+                e.stopPropagation();
+                setValue(null);
+              }}
+              className="text-muted-foreground"
+            >
+              x
+            </span>
+          ) : (
+            <ChevronDownIcon />
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto overflow-hidden p-0" align="start">
