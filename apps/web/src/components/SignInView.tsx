@@ -1,12 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 
 import { authClient } from "~/auth/client";
 import { Button } from "./ui/button";
+import { Spinner } from "./ui/spinner";
 
 export default function SignInView() {
   const socialProviders = [{ label: "google", icon: <FaGoogle /> }];
+
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <div className="flex h-screen w-screen flex-col items-center pt-40">
@@ -20,11 +24,24 @@ export default function SignInView() {
             <Button
               key={provider.label}
               onClick={() =>
-                authClient.signIn.social({ provider: provider.label })
+                authClient.signIn.social({
+                  provider: provider.label,
+                  fetchOptions: {
+                    onRequest: () => setIsLoading(true),
+                    onError: () => setIsLoading(false),
+                  },
+                })
               }
             >
-              {provider.icon}
-              {provider.label.charAt(0).toUpperCase() + provider.label.slice(1)}
+              {isLoading ? (
+                <Spinner />
+              ) : (
+                <>
+                  {provider.icon}
+                  {provider.label.charAt(0).toUpperCase() +
+                    provider.label.slice(1)}
+                </>
+              )}
             </Button>
           ))}
         </div>
