@@ -11,6 +11,7 @@ export default function SignInView() {
   const socialProviders = [{ label: "google", icon: <FaGoogle /> }];
 
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   return (
     <div className="flex h-screen w-screen flex-col items-center pt-40">
@@ -27,8 +28,14 @@ export default function SignInView() {
                 authClient.signIn.social({
                   provider: provider.label,
                   fetchOptions: {
-                    onRequest: () => setIsLoading(true),
-                    onError: () => setIsLoading(false),
+                    onRequest: () => {
+                      setIsLoading(true);
+                      setError("");
+                    },
+                    onError: () => {
+                      setIsLoading(false);
+                      setError("An error occurred during sign-in.");
+                    },
                   },
                 })
               }
@@ -45,6 +52,7 @@ export default function SignInView() {
             </Button>
           ))}
         </div>
+        {error && <p className="text-destructive">{error}</p>}
       </div>
     </div>
   );

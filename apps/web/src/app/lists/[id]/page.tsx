@@ -2,12 +2,15 @@
 
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowBigLeft } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import { FaEllipsis, FaGear, FaList, FaTrash, FaTv } from "react-icons/fa6";
 import { MdLocalMovies } from "react-icons/md";
 
 import CreateTask from "~/components/list/task/CreateTask";
+import MediaCard from "~/components/list/task/MediaCard";
 import TaskCard from "~/components/list/task/TaskCard";
 import Container from "~/components/my-ui/container";
 import LoadingAndRetry from "~/components/my-ui/loadingAndRetry";
@@ -15,6 +18,21 @@ import ProgressBadge from "~/components/my-ui/progressBadge";
 import TextFieldEditInPlace from "~/components/my-ui/textFieldEditInPlace";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
 import { useTRPC } from "~/trpc/react";
 import { calculateProgress } from "~/utils/progress-utils";
 
@@ -24,6 +42,8 @@ export default function ListDetails({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
+
+  // const list = prefetch(trpc.list.readById.queryOptions({ id }));
   const trpc = useTRPC();
   const {
     data: list,
@@ -58,6 +78,13 @@ export default function ListDetails({
     }
   };
 
+  const listTypeOptions = [
+    { label: "General", icon: <FaList /> },
+    { label: "TMDB", icon: <FaTv /> },
+  ] as const;
+  const [listType, setListType] =
+    useState<(typeof listTypeOptions)[number]["label"]>("TMDB");
+
   if (isLoading || isError) {
     return (
       <LoadingAndRetry
@@ -69,16 +96,70 @@ export default function ListDetails({
   }
 
   if (!list) {
-    return <div>List not found</div>;
+    notFound();
   }
 
   return (
     <Container>
-      <Link href="/lists">
-        <Button variant={"secondary"} className="w-fit">
-          <ArrowBigLeft />
-        </Button>
-      </Link>
+      <div className="flex items-center justify-between">
+        <Link href="/lists">
+          <Button variant={"secondary"} className="w-fit">
+            <ArrowBigLeft />
+          </Button>
+        </Link>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline">
+              <FaEllipsis />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuGroup>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <FaGear />
+                  List Settings
+                </DropdownMenuSubTrigger>
+                <DropdownMenuPortal>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuGroup>
+                      <DropdownMenuLabel>List Type</DropdownMenuLabel>
+                      <DropdownMenuRadioGroup
+                        value={listType}
+                        onValueChange={(value) =>
+                          setListType(
+                            listTypeOptions.find((o) => o.label === value)
+                              ?.label ?? "General",
+                          )
+                        }
+                      >
+                        {listTypeOptions.map((option) => (
+                          <DropdownMenuRadioItem
+                            value={option.label}
+                            onSelect={() => setListType(option.label)}
+                            key={option.label}
+                          >
+                            {option.icon}
+                            {option.label}
+                          </DropdownMenuRadioItem>
+                        ))}
+                      </DropdownMenuRadioGroup>
+                    </DropdownMenuGroup>
+                  </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+              </DropdownMenuSub>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem variant="destructive">
+                <FaTrash />
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
 
       <div className="rounded-xl bg-gray-800 p-4">
         <div className="flex items-center gap-2">
@@ -126,10 +207,19 @@ export default function ListDetails({
                 delayChildren: 0.2,
               }}
             >
-              <TaskCard task={task} />
+              {listType === "TMDB" ? (
+                <MediaCard task={task} />
+              ) : (
+                // <TaskCard task={task} />
+                <TaskCard task={task} />
+              )}
             </motion.div>
           ))}
+          {/* <MediaCard task={{ name: "test" }} /> */}
         </AnimatePresence>
+      </div>
+
+      <div className="rounded-xl bg-gray-800 p-4">
         <CreateTask listId={list.id} />
       </div>
     </Container>

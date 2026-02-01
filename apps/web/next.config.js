@@ -14,7 +14,20 @@ const config = {
   typescript: { ignoreBuildErrors: true },
 
   images: {
-    domains: ["lh3.googleusercontent.com", "media.themoviedb.org"],
+    remotePatterns: [
+      // {
+      //   protocol: "https",
+      //   hostname: "media.themoviedb.org",
+      // },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
+      // {
+      //   protocol: "https",
+      //   hostname: "www.themoviedb.org",
+      // },
+    ],
   },
 };
 

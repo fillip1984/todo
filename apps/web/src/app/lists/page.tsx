@@ -18,7 +18,6 @@ import {
   EmptyTitle,
 } from "~/components/ui/empty";
 import { Separator } from "~/components/ui/separator";
-import { Skeleton } from "~/components/ui/skeleton";
 import { useTRPC } from "~/trpc/react";
 
 export default function HomePage() {
@@ -30,34 +29,13 @@ export default function HomePage() {
     refetch,
   } = useQuery(trpc.list.readAll.queryOptions());
 
-  // loading and error view
   if (isLoading || isError) {
     return (
-      <>
-        <Container>
-          <div className="rounded-xl bg-gray-800 p-4">
-            <div className="flex flex-col gap-2">
-              {[1, 2, 3, 4].map((_, index) => (
-                <ListSkeleton key={index} />
-              ))}
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-2 rounded-xl bg-gray-800 p-4">
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-18 w-full" />
-            <Skeleton className="h-10 w-full" />
-          </div>
-        </Container>
-        {/* Experimenting with skeletons, leaving this for retrying errors */}
-        {isError && (
-          <LoadingAndRetry
-            isLoading={false}
-            isError={isError}
-            retry={() => void refetch()}
-          />
-        )}
-      </>
+      <LoadingAndRetry
+        isLoading={isLoading}
+        isError={isError}
+        retry={refetch}
+      />
     );
   }
 
@@ -89,7 +67,7 @@ export default function HomePage() {
   // default view
   return (
     <Container scrollToTopButton={true}>
-      <div className="rounded-xl bg-gray-800 p-4">
+      <div className="rounded-xl bg-gray-800 p-2">
         <div className="flex flex-col gap-2">
           <AnimatePresence>
             {lists?.map((list) => (
@@ -115,17 +93,3 @@ export default function HomePage() {
     </Container>
   );
 }
-
-const ListSkeleton = () => {
-  return (
-    <div className="flex items-center gap-2 rounded-lg border p-2">
-      <Skeleton className="h-22.5 w-22.5 rounded-full" />
-      <div className="flex grow flex-col gap-2">
-        <Skeleton className="h-4 w-62.5" />
-        <Skeleton className="h-2 w-50" />
-        <Skeleton className="h-2 w-50" />
-      </div>
-      <Skeleton className="h-8 w-8" />
-    </div>
-  );
-};
