@@ -1,5 +1,7 @@
 import { relations } from "drizzle-orm";
 
+// import { pgEnum } from "drizzle-orm/pg-core";
+
 import { user } from "./auth-schema";
 import { appSchema, baseFields } from "./db-utils";
 
@@ -7,10 +9,6 @@ export const list = appSchema.table("list", (t) => ({
   ...baseFields,
   name: t.varchar({ length: 256 }).notNull(),
   description: t.text(),
-  userId: t
-    .text()
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
 }));
 
 export const task = appSchema.table("task", (t) => ({
@@ -22,11 +20,11 @@ export const task = appSchema.table("task", (t) => ({
     .text()
     .notNull()
     .references(() => list.id, { onDelete: "cascade" }),
-  userId: t
-    .text()
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
+  // type: ListTypeEnum.default("GENERAL").notNull(),
 }));
+
+// enums
+// export const ListTypeEnum = pgEnum("list_type", ["GENERAL", "TMDB"]);
 
 // relationships
 export const listRelations = relations(list, ({ one, many }) => ({

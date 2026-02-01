@@ -16,7 +16,6 @@ export const appSchema = pgSchema(process.env.POSTGRES_SCHEMA);
  * Base fields for all tables.
  */
 export const baseFields = {
-  // id: uuid().primaryKey().defaultRandom(),
   id: text()
     .primaryKey()
     .$defaultFn(() => createId()),
