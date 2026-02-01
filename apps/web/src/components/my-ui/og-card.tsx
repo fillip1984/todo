@@ -1,3 +1,6 @@
+"use client";
+
+import { use } from "react";
 import Image from "next/image";
 import { getLinkPreview } from "link-preview-js";
 
@@ -22,10 +25,10 @@ interface IVideoType {
   height: string | undefined;
 }
 
-export default async function OGCard() {
+export default function OGCard() {
   const url =
     "This is a text supposed to be parsed and the first link displayed https://www.themoviedb.org/tv/12609-dragon-ball?language=en-US";
-  const ogResponse = (await getLinkPreview(url)) as OGPreviewResponse;
+  const ogResponse = use(getLinkPreview(url)) as OGPreviewResponse;
 
   if (!ogResponse.title) {
     return <div>No preview available</div>;

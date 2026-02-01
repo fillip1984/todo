@@ -1,4 +1,5 @@
 import { createEnv } from "@t3-oss/env-nextjs";
+import { TMDB } from "tmdb-ts";
 import { z } from "zod/v4";
 
 import { authEnv } from "@todo/auth/env";
@@ -18,6 +19,7 @@ export const env = createEnv({
     POSTGRES_URL: z.url(),
     POSTGRES_SCHEMA: z.string(),
     PRODUCTION_URL: z.url(),
+    TMDB_API_KEY: z.string(),
   },
   /**
    * Specify your client-side environment variables schema here.
@@ -35,6 +37,7 @@ export const env = createEnv({
     POSTGRES_URL: process.env.POSTGRES_URL,
     POSTGRES_SCHEMA: process.env.POSTGRES_SCHEMA,
     PRODUCTION_URL: process.env.PRODUCTION_URL,
+    TMDB_API_KEY: process.env.TMDB_API_KEY,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

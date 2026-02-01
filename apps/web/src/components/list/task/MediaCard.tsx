@@ -1,15 +1,33 @@
-import type { TaskType } from "@todo/api";
+import Image from "next/image";
 
-import OGCard from "~/components/my-ui/og-card";
+import type { TaskType } from "@todo/api";
 
 export default function MediaCard({ task }: { task: TaskType }) {
   return (
-    <div className="mb-2 rounded-lg border border-gray-700 bg-gray-900 p-4">
+    <div className="mb-2 rounded-lg border border-gray-700 bg-gray-900 p-2">
       <h6 className="mb-1 text-lg font-semibold">{task.name}</h6>
       {task.description && (
         <p className="text-sm text-gray-400">{task.description}</p>
       )}
-      <OGCard />
+      <Image
+        src="https://image.tmdb.org/t/p/original/ydf1CeiBLfdxiyNTpskM0802TKl.jpg"
+        alt={task.name}
+        width={500}
+        height={300}
+      />
+
+      <div
+        onClick={() => window.open("https://www.themoviedb.org/")}
+        className="mt-2 flex w-full justify-end"
+      >
+        <Image
+          src="/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg"
+          alt={task.name}
+          height={10}
+          width={100}
+          className="cursor-pointer"
+        />
+      </div>
     </div>
   );
 }

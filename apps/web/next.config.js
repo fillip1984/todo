@@ -15,18 +15,14 @@ const config = {
 
   images: {
     remotePatterns: [
-      // {
-      //   protocol: "https",
-      //   hostname: "media.themoviedb.org",
-      // },
       {
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
       },
-      // {
-      //   protocol: "https",
-      //   hostname: "www.themoviedb.org",
-      // },
+      {
+        protocol: "https",
+        hostname: "image.tmdb.org",
+      },
     ],
   },
 };

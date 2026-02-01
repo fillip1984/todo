@@ -210,12 +210,10 @@ export default function ListDetails({
               {listType === "TMDB" ? (
                 <MediaCard task={task} />
               ) : (
-                // <TaskCard task={task} />
                 <TaskCard task={task} />
               )}
             </motion.div>
           ))}
-          {/* <MediaCard task={{ name: "test" }} /> */}
         </AnimatePresence>
       </div>
 
