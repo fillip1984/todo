@@ -13,6 +13,8 @@ export function initAuth<
   baseUrl: string;
   secret: string | undefined;
 
+  disableSignUps: string;
+
   googleClientId: string;
   googleClientSecret: string;
   extraPlugins?: TExtraPlugins;
@@ -20,9 +22,7 @@ export function initAuth<
   const config = {
     database: drizzleAdapter(db, {
       provider: "pg",
-      schema: {
-        ...schema,
-      },
+      schema,
     }),
     baseURL: options.baseUrl,
     secret: options.secret,
@@ -39,6 +39,7 @@ export function initAuth<
         clientId: options.googleClientId,
         clientSecret: options.googleClientSecret,
         redirectURI: `${options.baseUrl}/api/auth/callback/google`,
+        disableImplicitSignUp: options.disableSignUps === "true",
       },
     },
     trustedOrigins: ["expo://"],

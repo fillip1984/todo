@@ -10,6 +10,7 @@ export function authEnv() {
         process.env.NODE_ENV === "production"
           ? z.string().min(1)
           : z.string().min(1).optional(),
+      AUTH_DISABLE_SIGN_UPS: z.string(),
       NODE_ENV: z.enum(["development", "production"]).optional(),
     },
     runtimeEnv: process.env,

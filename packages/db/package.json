@@ -27,8 +27,9 @@
     "push:prod": "pnpm dotenv -e ../../.env.prod -- drizzle-kit push",
     "studio": "pnpm with-env drizzle-kit studio",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
-    "db:upgrade": "pnpm with-env drizzle-kit up",
-    "db:relations": "pnpm with-env drizzle-kit pull",
+    "export": "pnpm with-env drizzle-kit export",
+    "upgrade": "pnpm with-env drizzle-kit up",
+    "relations": "pnpm with-env drizzle-kit pull",
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
