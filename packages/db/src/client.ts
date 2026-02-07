@@ -1,5 +1,5 @@
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 
 import * as schema from "./index";
 import * as relations from "./schema/relations";
@@ -13,20 +13,33 @@ if (!process.env.POSTGRES_URL) {
  * update.
  */
 const globalForDb = globalThis as unknown as {
-  conn: postgres.Sql | undefined;
+  pool: Pool | undefined;
 };
 
-const conn =
-  globalForDb.conn ??
-  postgres(process.env.POSTGRES_URL, {
-    prepare: false,
-    ssl: process.env.NODE_ENV === "production" ? "require" : "prefer",
+// const conn =
+//   globalForDb.conn ??
+//   postgres(process.env.POSTGRES_URL, {
+//     prepare: false,
+//     ssl: process.env.NODE_ENV === "production" ? "require" : "prefer",
+//   });
+// if (process.env.NODE_ENV !== "production") globalForDb.conn = conn;
+
+const pool =
+  globalForDb.pool ??
+  new Pool({
+    connectionString: process.env.POSTGRES_URL,
+    // ssl:
+    //   process.env.NODE_ENV === "production"
+    //     ? { rejectUnauthorized: false }
+    //     : false,
   });
-if (process.env.NODE_ENV !== "production") globalForDb.conn = conn;
 
 export const db = drizzle({
-  client: conn,
+  client: pool,
   ...schema,
   ...relations,
   logger: process.env.NODE_ENV !== "production",
 });
+
+const result = await db.execute("select 1");
+console.log("Database connected:", result);

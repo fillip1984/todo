@@ -35,7 +35,7 @@
   "dependencies": {
     "@paralleldrive/cuid2": "^3.3.0",
     "drizzle-orm": "1.0.0-beta.15-859cf75",
-    "postgres": "^3.4.8",
+    "pg": "^8.18.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
@@ -43,6 +43,7 @@
     "@todo/prettier-config": "workspace:*",
     "@todo/tsconfig": "workspace:*",
     "@types/node": "25.1.0",
+    "@types/pg": "^8.16.0",
     "drizzle-kit": "1.0.0-beta.15-859cf75",
     "eslint": "^9.39.2",
     "prettier": "^3.8.1",
