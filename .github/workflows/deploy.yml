@@ -55,6 +55,7 @@ jobs:
           AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
           AUTH_TRUST_HOST: "true"
           PRODUCTION_URL: "https://todo.illizen.com"
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
         run: |
           pnpm build:packages
           pnpx sst deploy --stage prod

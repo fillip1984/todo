@@ -25,6 +25,7 @@ export default $config({
         AUTH_SECRET: process.env.AUTH_SECRET,
         AUTH_TRUST_HOST: "true",
         PRODUCTION_URL: process.env.PRODUCTION_URL,
+        TMDB_API_KEY: process.env.TMDB_API_KEY,
       },
     });
   },
