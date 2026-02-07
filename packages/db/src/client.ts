@@ -1,7 +1,8 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 
-import * as schema from "./schema";
+import * as schema from "./index";
+import * as relations from "./schema/relations";
 
 if (!process.env.POSTGRES_URL) {
   throw new Error("POSTGRES_URL is not set");
@@ -22,7 +23,10 @@ const conn =
     ssl: process.env.NODE_ENV === "production" ? "require" : "prefer",
   });
 if (process.env.NODE_ENV !== "production") globalForDb.conn = conn;
-export const db = drizzle(conn, {
-  schema,
+
+export const db = drizzle({
+  client: conn,
+  ...schema,
+  ...relations,
   logger: process.env.NODE_ENV !== "production",
 });

@@ -12,8 +12,8 @@
       "default": "./src/client.ts"
     },
     "./schema": {
-      "types": "./dist/schema.d.ts",
-      "default": "./src/schema.ts"
+      "types": "./dist/schema/index.d.ts",
+      "default": "./src/schema/index.ts"
     }
   },
   "license": "MIT",
@@ -27,12 +27,13 @@
     "push:prod": "pnpm dotenv -e ../../.env.prod -- drizzle-kit push",
     "studio": "pnpm with-env drizzle-kit studio",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "db:upgrade": "pnpm with-env drizzle-kit up",
+    "db:relations": "pnpm with-env drizzle-kit pull",
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@paralleldrive/cuid2": "^3.0.6",
-    "drizzle-orm": "^0.45.1",
-    "drizzle-zod": "^0.8.3",
+    "@paralleldrive/cuid2": "^3.3.0",
+    "drizzle-orm": "1.0.0-beta.15-859cf75",
     "postgres": "^3.4.8",
     "zod": "^4.3.6"
   },
@@ -40,8 +41,8 @@
     "@todo/eslint-config": "workspace:*",
     "@todo/prettier-config": "workspace:*",
     "@todo/tsconfig": "workspace:*",
-    "@types/node": "25.0.10",
-    "drizzle-kit": "^0.31.8",
+    "@types/node": "25.1.0",
+    "drizzle-kit": "1.0.0-beta.15-859cf75",
     "eslint": "^9.39.2",
     "prettier": "^3.8.1",
     "typescript": "^5.9.3"

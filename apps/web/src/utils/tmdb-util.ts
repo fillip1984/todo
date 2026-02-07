@@ -2,12 +2,12 @@ import { TMDB } from "tmdb-ts";
 
 import { env } from "~/env";
 
-if (!env.TMDB_API_KEY) {
-  throw new Error("TMDB_API_KEY is not defined");
-}
+// if (!env.TMDB_API_KEY) {
+//   throw new Error("TMDB_API_KEY is not defined");
+// }
 
-console.log("TMDB_API_KEY", env.TMDB_API_KEY);
-const tmdb = new TMDB(env.TMDB_API_KEY as string);
+// console.log("TMDB_API_KEY", env.TMDB_API_KEY);
+const tmdb = new TMDB(env.TMDB_API_KEY);
 
 export const searchMovie = async ({ title }: { title: string }) => {
   try {

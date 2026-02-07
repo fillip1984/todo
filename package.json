@@ -38,6 +38,6 @@
   },
   "prettier": "@todo/prettier-config",
   "dependencies": {
-    "sst": "3.17.37"
+    "sst": "3.17.38"
   }
 }

@@ -1,17 +1,24 @@
-import { eq } from "@todo/db";
-import { list, task } from "@todo/db/schema";
-
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const adminRouter = createTRPCRouter({
   exportData: protectedProcedure.mutation(async ({ ctx }) => {
     const lists = await ctx.db.query.list.findMany({
-      where: eq(list.userId, ctx.session.user.id),
+      where: {
+        userId: ctx.session.user.id,
+      },
     });
+    // const lists = await ctx.db._query.list.findMany({
+    //   where: eq(list.userId, ctx.session.user.id),
+    // });
 
     const tasks = await ctx.db.query.task.findMany({
-      where: eq(task.userId, ctx.session.user.id),
+      where: {
+        userId: ctx.session.user.id,
+      },
     });
+    // const tasks = await ctx.db._query.task.findMany({
+    //   where: eq(task.userId, ctx.session.user.id),
+    // });
 
     return {
       lists,

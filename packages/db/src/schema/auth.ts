@@ -1,6 +1,6 @@
-import { appSchema } from "./db-utils";
+import { baseSchema } from "./base";
 
-export const user = appSchema.table("user", (t) => ({
+export const user = baseSchema.table("user", (t) => ({
   id: t.text().primaryKey(),
   name: t.text().notNull(),
   email: t.text().notNull().unique(),
@@ -10,7 +10,7 @@ export const user = appSchema.table("user", (t) => ({
   updatedAt: t.timestamp().notNull(),
 }));
 
-export const session = appSchema.table("session", (t) => ({
+export const session = baseSchema.table("session", (t) => ({
   id: t.text().primaryKey(),
   expiresAt: t.timestamp().notNull(),
   token: t.text().notNull().unique(),
@@ -24,7 +24,7 @@ export const session = appSchema.table("session", (t) => ({
     .references(() => user.id, { onDelete: "cascade" }),
 }));
 
-export const account = appSchema.table("account", (t) => ({
+export const account = baseSchema.table("account", (t) => ({
   id: t.text().primaryKey(),
   accountId: t.text().notNull(),
   providerId: t.text().notNull(),
@@ -43,7 +43,7 @@ export const account = appSchema.table("account", (t) => ({
   updatedAt: t.timestamp().notNull(),
 }));
 
-export const verification = appSchema.table("verification", (t) => ({
+export const verification = baseSchema.table("verification", (t) => ({
   id: t.text().primaryKey(),
   identifier: t.text().notNull(),
   value: t.text().notNull(),

@@ -9,7 +9,6 @@ import { ThemeProvider } from "next-themes";
 import { getSession } from "~/auth/server";
 import FAB from "~/components/fab";
 import SignInView from "~/components/SignInView";
-import { searchMovie } from "~/utils/tmdb-util";
 
 export const metadata: Metadata = {
   title: "Todo",
@@ -22,8 +21,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getSession();
-  const r = await searchMovie({ title: "Dragon Ball" });
-  console.log({ no1: r?.results?.[0] });
 
   return (
     <html lang="en" suppressHydrationWarning>

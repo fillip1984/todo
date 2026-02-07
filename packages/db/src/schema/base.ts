@@ -1,8 +1,6 @@
 import { createId } from "@paralleldrive/cuid2";
 import { pgSchema, text, timestamp } from "drizzle-orm/pg-core";
 
-import { user } from "./schema";
-
 if (!process.env.POSTGRES_SCHEMA) {
   throw new Error("Missing POSTGRES_SCHEMA");
 }
@@ -10,7 +8,7 @@ if (!process.env.POSTGRES_SCHEMA) {
 /**
  * Table schema is used to separate different applications using the same database.
  */
-export const appSchema = pgSchema(process.env.POSTGRES_SCHEMA);
+export const baseSchema = pgSchema(process.env.POSTGRES_SCHEMA);
 
 /**
  * Base fields for all tables.
@@ -21,7 +19,4 @@ export const baseFields = {
     .$defaultFn(() => createId()),
   createdAt: timestamp().defaultNow().notNull(),
   updatedAt: timestamp().$onUpdate(() => /* @__PURE__ */ new Date()),
-  userId: text()
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
 };
