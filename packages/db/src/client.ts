@@ -41,5 +41,5 @@ export const db = drizzle({
   logger: process.env.NODE_ENV !== "production",
 });
 
-const result = await db.execute("select 1");
-console.log("Database connected:", result);
+// const result = await db.execute("select 1");
+// console.log("Database connected:", result);
