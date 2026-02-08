@@ -58,4 +58,4 @@ jobs:
           TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
         run: |
           pnpm build:packages
-          pnpx sst deploy --stage prod
+          pnpm sst deploy --stage prod
