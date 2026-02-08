@@ -11,21 +11,21 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: "22"
+          node-version: "*"
           cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install
 
-      # Looks like maintaining (restoring and saving updated cache) nextjs cache takes close to 1 minute (24s to restore and 40'ish to save off) .
+      # Looks like maintaining (restoring and saving updated cache) nextjs cache takes close to 1 minute (24s to restore and 40'ish to save off).
       # If your nextjs build is shorter than that then there is no benefit here
       # - name: Cache Next.js build
       #   uses: actions/cache@v4
@@ -36,12 +36,6 @@ jobs:
       #     # If source files changed but packages didn't, rebuild from a prior cache.
       #     restore-keys: |
       #       ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
-
-      # Waiting on fix for: https://github.com/anomalyco/sst/issues/6314
-      - name: Add SST's bin directory to PATH
-        # Writing to $GITHUB_PATH causes GitHub Actions to prepend this directory to PATH,
-        # ensuring SST's version of Pulumi is found before GitHub Actions' version
-        run: echo "$HOME/.config/sst/bin" >> $GITHUB_PATH
 
       - name: Build and Deploy
         env:
