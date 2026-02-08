@@ -1,11 +1,6 @@
 {
   "name": "todo-monorepo",
   "private": true,
-  "engines": {
-    "node": "^22.21.0",
-    "pnpm": "^10.19.0"
-  },
-  "packageManager": "pnpm@10.19.0",
   "scripts": {
     "auth:generate": "pnpm -F @todo/auth generate",
     "build": "pnpm -r build",
