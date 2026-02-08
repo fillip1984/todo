@@ -10,7 +10,7 @@
     "auth:generate": "pnpm -F @todo/auth generate",
     "build": "pnpm -r build",
     "build:mobile": "pnpm -F !web run build:production",
-    "build:packages": "pnpm -F '!./apps/**' run build",
+    "build:packages": "pnpm -F './packages/**' run build",
     "build:web": "pnpm -F !mobile run build",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "pnpm -r clean",
