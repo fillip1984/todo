@@ -5,6 +5,7 @@
     "node": "^24",
     "pnpm": "^10"
   },
+  "packageManager": "pnpm@10",
   "scripts": {
     "auth:generate": "pnpm -F @todo/auth generate",
     "build": "pnpm -r build",
