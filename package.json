@@ -29,17 +29,18 @@
     "prod:db:push": "pnpm -F @todo/db push:prod",
     "prod:deploy": "pnpm dotenv -e .env.prod -- sst deploy --stage prod",
     "prod:nuke": "pnpm dotenv -e .env.prod -- sst remove --stage prod",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "update-all": "pnpm -r update --latest"
   },
   "devDependencies": {
     "@todo/prettier-config": "workspace:*",
-    "@types/aws-lambda": "8.10.160",
+    "@types/aws-lambda": "8.10.161",
     "dotenv-cli": "^11.0.0",
     "prettier": "^3.8.1",
     "typescript": "^5.9.3"
   },
   "prettier": "@todo/prettier-config",
   "dependencies": {
-    "sst": "3.17.38"
+    "sst": "4.5.12"
   }
 }
