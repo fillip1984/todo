@@ -13,9 +13,9 @@ export default $config({
     new sst.aws.Nextjs("todo", {
       domain: "todo.illizen.com",
       path: "./apps/web",
-      server: {
-        runtime: "nodejs22.x",
-      },
+      // server: {
+      //   runtime: "nodejs22.x",
+      // },
       environment: {
         POSTGRES_URL: process.env.POSTGRES_URL,
         POSTGRES_SCHEMA: process.env.POSTGRES_SCHEMA,
