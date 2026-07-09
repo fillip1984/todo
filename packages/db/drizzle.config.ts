@@ -19,5 +19,4 @@ export default {
     ssl: process.env.NODE_ENV === "production" ? "require" : "prefer",
   },
   schemaFilter: [`${process.env.POSTGRES_SCHEMA}`],
-  casing: "camelCase",
 } satisfies Config;

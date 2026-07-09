@@ -1,3 +1,6 @@
 {
-  "typescript.preferences.autoImportFileExcludePatterns": ["@radix-ui/*"]
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "@radix-ui/*"
+  ],
+  "js/ts.tsdk.path": "node_modules/typescript/lib"
 }
