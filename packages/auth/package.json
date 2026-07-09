@@ -18,11 +18,11 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@better-auth/expo": "1.4.18",
+    "@better-auth/expo": "1.6.23",
     "@t3-oss/env-core": "^0.13.11",
     "@todo/db": "workspace:*",
-    "better-auth": "1.4.18",
-    "zod": "^4.3.6"
+    "better-auth": "1.6.23",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@better-auth/cli": "1.4.21",
@@ -30,9 +30,9 @@
     "@todo/eslint-config": "workspace:*",
     "@todo/prettier-config": "workspace:*",
     "@todo/tsconfig": "workspace:*",
-    "@types/node": "^25.5.0",
-    "eslint": "^9.39.2",
-    "prettier": "^3.8.1",
+    "@types/node": "^26.1.0",
+    "eslint": "^9.39.4",
+    "prettier": "^3.9.4",
     "typescript": "^5.9.3"
   },
   "prettier": "@todo/prettier-config"

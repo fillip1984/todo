@@ -20,17 +20,17 @@
   "dependencies": {
     "@todo/auth": "workspace:*",
     "@todo/db": "workspace:*",
-    "@trpc/server": "^11.16.0",
+    "@trpc/server": "^11.18.0",
     "superjson": "^2.2.6",
-    "zod": "^4.3.6"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@todo/eslint-config": "workspace:*",
     "@todo/prettier-config": "workspace:*",
     "@todo/tsconfig": "workspace:*",
-    "@types/node": "^25.5.0",
-    "eslint": "^9.39.2",
-    "prettier": "^3.8.1",
+    "@types/node": "^26.1.0",
+    "eslint": "^9.39.4",
+    "prettier": "^3.9.4",
     "typescript": "^5.9.3"
   },
   "prettier": "@todo/prettier-config"

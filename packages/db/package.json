@@ -34,19 +34,19 @@
   },
   "dependencies": {
     "@paralleldrive/cuid2": "^3.3.0",
-    "drizzle-orm": "1.0.0-beta.20",
-    "pg": "^8.20.0",
-    "zod": "^4.3.6"
+    "drizzle-orm": "1.0.0-rc.4",
+    "pg": "^8.22.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@todo/eslint-config": "workspace:*",
     "@todo/prettier-config": "workspace:*",
     "@todo/tsconfig": "workspace:*",
-    "@types/node": "25.5.0",
+    "@types/node": "26.1.0",
     "@types/pg": "^8.20.0",
-    "drizzle-kit": "1.0.0-beta.20",
-    "eslint": "^9.39.2",
-    "prettier": "^3.8.1",
+    "drizzle-kit": "1.0.0-rc.4",
+    "eslint": "^9.39.4",
+    "prettier": "^3.9.4",
     "typescript": "^5.9.3"
   },
   "prettier": "@todo/prettier-config"
