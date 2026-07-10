@@ -6,12 +6,12 @@ import { notFound } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowBigLeft } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { FaEllipsis, FaGear, FaList, FaTrash, FaTv } from "react-icons/fa6";
+import { FaEllipsis, FaGear, FaCollection, FaTrash, FaTv } from "react-icons/fa6";
 import { MdLocalMovies } from "react-icons/md";
 
-import CreateTask from "~/components/list/task/CreateTask";
-import MediaCard from "~/components/list/task/MediaCard";
-import TaskCard from "~/components/list/task/TaskCard";
+import CreateTask from "~/components/collection/task/CreateTask";
+import MediaCard from "~/components/collection/task/MediaCard";
+import TaskCard from "~/components/collection/task/TaskCard";
 import Container from "~/components/my-ui/container";
 import LoadingAndRetry from "~/components/my-ui/loadingAndRetry";
 import ProgressBadge from "~/components/my-ui/progressBadge";
@@ -36,54 +36,54 @@ import {
 import { useTRPC } from "~/trpc/react";
 import { calculateProgress } from "~/utils/progress-utils";
 
-export default function ListDetails({
+export default function CollectionDetails({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
 
-  // const list = prefetch(trpc.list.readById.queryOptions({ id }));
+  // const collection = prefetch(trpc.collection.readById.queryOptions({ id }));
   const trpc = useTRPC();
   const {
-    data: list,
+    data: collection,
     isLoading,
     isError,
     refetch,
-  } = useQuery(trpc.list.readById.queryOptions({ id }));
+  } = useQuery(trpc.collection.readById.queryOptions({ id }));
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   useEffect(() => {
-    if (list) {
+    if (collection) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setName(list.name);
-      setDescription(list.description ?? "");
+      setName(collection.name);
+      setDescription(collection.description ?? "");
     }
-  }, [list]);
+  }, [collection]);
 
   const queryClient = useQueryClient();
-  const updateList = useMutation(
-    trpc.list.update.mutationOptions({
+  const updateCollection = useMutation(
+    trpc.collection.update.mutationOptions({
       onSuccess: async () => {
-        await queryClient.invalidateQueries(trpc.list.pathFilter());
+        await queryClient.invalidateQueries(trpc.collection.pathFilter());
       },
     }),
   );
-  const handleListUpdate = () => {
-    if (!list) return;
+  const handleCollectionUpdate = () => {
+    if (!collection) return;
     // only update if changes were made
-    if (name !== list.name || description !== list.description) {
-      updateList.mutate({ ...list, name, description });
+    if (name !== collection.name || description !== collection.description) {
+      updateCollection.mutate({ ...collection, name, description });
     }
   };
 
-  const listTypeOptions = [
-    { label: "General", icon: <FaList /> },
+  const collectionTypeOptions = [
+    { label: "General", icon: <FaCollection /> },
     { label: "TMDB", icon: <FaTv /> },
   ] as const;
-  const [listType, setListType] =
-    useState<(typeof listTypeOptions)[number]["label"]>("TMDB");
+  const [collectionType, setCollectionType] =
+    useState<(typeof collectionTypeOptions)[number]["label"]>("TMDB");
 
   if (isLoading || isError) {
     return (
@@ -95,14 +95,14 @@ export default function ListDetails({
     );
   }
 
-  if (!list) {
+  if (!collection) {
     notFound();
   }
 
   return (
     <Container>
       <div className="flex items-center justify-between">
-        <Link href="/lists">
+        <Link href="/collections">
           <Button variant={"secondary"} className="w-fit">
             <ArrowBigLeft />
           </Button>
@@ -119,25 +119,25 @@ export default function ListDetails({
               <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
                   <FaGear />
-                  List Settings
+                  Collection Settings
                 </DropdownMenuSubTrigger>
                 <DropdownMenuPortal>
                   <DropdownMenuSubContent>
                     <DropdownMenuGroup>
-                      <DropdownMenuLabel>List Type</DropdownMenuLabel>
+                      <DropdownMenuLabel>Collection Type</DropdownMenuLabel>
                       <DropdownMenuRadioGroup
-                        value={listType}
+                        value={collectionType}
                         onValueChange={(value) =>
-                          setListType(
-                            listTypeOptions.find((o) => o.label === value)
+                          setCollectionType(
+                            collectionTypeOptions.find((o) => o.label === value)
                               ?.label ?? "General",
                           )
                         }
                       >
-                        {listTypeOptions.map((option) => (
+                        {collectionTypeOptions.map((option) => (
                           <DropdownMenuRadioItem
                             value={option.label}
-                            onSelect={() => setListType(option.label)}
+                            onSelect={() => setCollectionType(option.label)}
                             key={option.label}
                           >
                             {option.icon}
@@ -165,8 +165,8 @@ export default function ListDetails({
         <div className="flex items-center gap-2">
           <ProgressBadge
             progress={calculateProgress({
-              completed: list.tasks.filter((t) => t.complete).length,
-              total: list.tasks.length,
+              completed: collection.tasks.filter((t) => t.complete).length,
+              total: collection.tasks.length,
             })}
             icon={<MdLocalMovies />}
           />
@@ -174,7 +174,7 @@ export default function ListDetails({
             <TextFieldEditInPlace
               value={name}
               onChange={setName}
-              onBlur={handleListUpdate}
+              onBlur={handleCollectionUpdate}
             />
           </h5>
         </div>
@@ -183,7 +183,7 @@ export default function ListDetails({
           <TextFieldEditInPlace
             value={description}
             onChange={setDescription}
-            onBlur={handleListUpdate}
+            onBlur={handleCollectionUpdate}
           />
         </div>
       </div>
@@ -192,12 +192,12 @@ export default function ListDetails({
         <div className="mb-2 flex items-center justify-between">
           <h5>Tasks</h5>
           <Badge variant="secondary">
-            {list.tasks.filter((t) => t.complete).length}/{list.tasks.length}{" "}
+            {collection.tasks.filter((t) => t.complete).length}/{collection.tasks.length}{" "}
             tasks
           </Badge>
         </div>
         <AnimatePresence>
-          {list.tasks.map((task) => (
+          {collection.tasks.map((task) => (
             <motion.div
               key={task.id}
               initial={{ height: 0, opacity: 0 }}
@@ -207,7 +207,7 @@ export default function ListDetails({
                 delayChildren: 0.2,
               }}
             >
-              {listType === "TMDB" ? (
+              {collectionType === "TMDB" ? (
                 <MediaCard task={task} />
               ) : (
                 <TaskCard task={task} />
@@ -218,7 +218,7 @@ export default function ListDetails({
       </div>
 
       <div className="rounded-xl bg-gray-800 p-4">
-        <CreateTask listId={list.id} />
+        <CreateTask collectionId={collection.id} />
       </div>
     </Container>
   );

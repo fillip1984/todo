@@ -1,11 +1,11 @@
 import { z } from "zod";
 
 import { and, eq } from "@todo/db";
-import { list } from "@todo/db/schema";
+import { collection } from "@todo/db/schema";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
-export const listRouter = createTRPCRouter({
+export const collectionRouter = createTRPCRouter({
   create: protectedProcedure
     .input(
       z.object({
@@ -14,14 +14,14 @@ export const listRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      return await ctx.db.insert(list).values({
+      return await ctx.db.insert(collection).values({
         ...input,
         userId: ctx.session.user.id,
       });
     }),
 
   readAll: protectedProcedure.query(async ({ ctx }) => {
-    const results = ctx.db.query.list.findMany({
+    const results = ctx.db.query.collection.findMany({
       where: {
         userId: ctx.session.user.id,
       },
@@ -34,31 +34,31 @@ export const listRouter = createTRPCRouter({
         userId: false,
       },
     });
-    // const results = ctx.db._query.list.findMany({
-    //   where: eq(list.userId, ctx.session.user.id),
+    // const results = ctx.db._query.collection.findMany({
+    //   where: eq(collection.userId, ctx.session.user.id),
     //   columns: {
     //     createdAt: false,
     //     updatedAt: false,
     //     userId: false,
     //   },
-    //   orderBy: (list, { asc }) => [asc(list.name)],
+    //   orderBy: (collection, { asc }) => [asc(collection.name)],
     // });
 
     // TODO: there's a bug in drizzle for performing counts on child objects,
     // check back once drizzle 1.0 drops
-    const listsWithTaskCount = (await results).map(async (listItem) => {
+    const collectionsWithTaskCount = (await results).map(async (collectionItem) => {
       const tasks = await ctx.db.query.task.findMany({
         where: {
-          listId: listItem.id,
+          collectionId: collectionItem.id,
         },
         columns: {
           id: true,
           complete: true,
         },
       });
-      // const listsWithTaskCount = (await results).map(async (listItem) => {
+      // const collectionsWithTaskCount = (await results).map(async (collectionItem) => {
       //   const tasks = await ctx.db._query.task.findMany({
-      //     where: eq(task.listId, listItem.id),
+      //     where: eq(task.collectionId, collectionItem.id),
       //     columns: {
       //       id: true,
       //       complete: true,
@@ -66,24 +66,24 @@ export const listRouter = createTRPCRouter({
       //   });
       const taskCount = tasks.length;
       const completedTaskCount = tasks.filter((task) => task.complete).length;
-      return { ...listItem, taskCount, completedTaskCount };
+      return { ...collectionItem, taskCount, completedTaskCount };
     });
 
-    return Promise.all(listsWithTaskCount);
+    return Promise.all(collectionsWithTaskCount);
   }),
 
   readById: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
-      // const result = await ctx.db._query.list.findFirst({
-      //   // where: and(eq(list.id, input.id), eq(list.userId, ctx.session.user.id)),
+      // const result = await ctx.db._query.collection.findFirst({
+      //   // where: and(eq(collection.id, input.id), eq(collection.userId, ctx.session.user.id)),
       //   where: {
       //     id: input.id,
       //     userId: ctx.session.user.id,
       //   }
       //   with: {
       //     tasks: {
-      //       // where: eq(task.listId, input.id),
+      //       // where: eq(task.collectionId, input.id),
       //       orderBy: { task: { createdAt: "asc" } },
       //       columns: {
       //         createdAt: false,
@@ -98,7 +98,7 @@ export const listRouter = createTRPCRouter({
       //     userId: false,
       //   },
       // });
-      const result = await ctx.db.query.list.findFirst({
+      const result = await ctx.db.query.collection.findFirst({
         where: {
           id: input.id,
           userId: ctx.session.user.id,
@@ -133,18 +133,18 @@ export const listRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { id, ...data } = input;
       return await ctx.db
-        .update(list)
+        .update(collection)
         .set(data)
-        .where(and(eq(list.id, id), eq(list.userId, ctx.session.user.id)));
+        .where(and(eq(collection.id, id), eq(collection.userId, ctx.session.user.id)));
     }),
 
   delete: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       return await ctx.db
-        .delete(list)
+        .delete(collection)
         .where(
-          and(eq(list.id, input.id), eq(list.userId, ctx.session.user.id)),
+          and(eq(collection.id, input.id), eq(collection.userId, ctx.session.user.id)),
         );
     }),
 });

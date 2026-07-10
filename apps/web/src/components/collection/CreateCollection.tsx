@@ -8,21 +8,21 @@ import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import { useTRPC } from "~/trpc/react";
 
-export default function CreateList() {
+export default function CreateCollection() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
-  const queryCleint = useQueryClient();
+  const queryClient = useQueryClient();
   const trpc = useTRPC();
-  const createList = useMutation(
-    trpc.list.create.mutationOptions({
+  const createCollection = useMutation(
+    trpc.collection.create.mutationOptions({
       onSuccess: () => {
-        void queryCleint.invalidateQueries(trpc.list.pathFilter());
+        void queryClient.invalidateQueries(trpc.collection.pathFilter());
       },
     }),
   );
-  const handleCreateList = () => {
-    createList.mutate({
+  const handleCreateCollection = () => {
+    createCollection.mutate({
       name,
       description,
     });
@@ -35,15 +35,15 @@ export default function CreateList() {
       <Input
         value={name}
         onChange={(e) => setName(e.target.value)}
-        placeholder="New list..."
+        placeholder="New collection..."
       />
       <Textarea
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        placeholder="List details..."
+        placeholder="Collection details..."
       />
-      <Button onClick={handleCreateList} disabled={name.trim().length === 0}>
-        Add List
+      <Button onClick={handleCreateCollection} disabled={name.trim().length === 0}>
+        Add Collection
       </Button>
     </div>
   );

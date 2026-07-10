@@ -1,11 +1,11 @@
 import { adminRouter } from "./router/admin";
-import { listRouter } from "./router/list";
+import { collectionRouter } from "./router/collection";
 import { taskRouter } from "./router/task";
 import { createTRPCRouter } from "./trpc";
 
 export const appRouter = createTRPCRouter({
   admin: adminRouter,
-  list: listRouter,
+  collection: collectionRouter,
   task: taskRouter,
 });
 

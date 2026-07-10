@@ -12,7 +12,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
-  CommandList,
+  CommandCollection,
 } from "../ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
@@ -76,7 +76,7 @@ export default function Combobox({
           {searchable && (
             <CommandInput placeholder="Search..." className="h-9" />
           )}
-          <CommandList>
+          <CommandCollection>
             <CommandEmpty>No options found</CommandEmpty>
             <CommandGroup>
               {options.map((option) => (
@@ -98,7 +98,7 @@ export default function Combobox({
                 </CommandItem>
               ))}
             </CommandGroup>
-          </CommandList>
+          </CommandCollection>
         </Command>
       </PopoverContent>
     </Popover>

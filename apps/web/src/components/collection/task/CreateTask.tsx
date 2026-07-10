@@ -8,23 +8,23 @@ import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import { useTRPC } from "~/trpc/react";
 
-export default function CreateTask({ listId }: { listId: string }) {
+export default function CreateTask({ collectionId }: { collectionId: string }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
-  const queryCleint = useQueryClient();
+  const queryClient = useQueryClient();
   const trpc = useTRPC();
   const createTask = useMutation(
     trpc.task.create.mutationOptions({
       onSuccess: () => {
-        void queryCleint.invalidateQueries(trpc.list.pathFilter());
-        void queryCleint.invalidateQueries(trpc.task.pathFilter());
+        void queryClient.invalidateQueries(trpc.collection.pathFilter());
+        void queryClient.invalidateQueries(trpc.task.pathFilter());
       },
     }),
   );
   const handleCreateTask = () => {
     createTask.mutate({
-      listId,
+      collectionId,
       name,
       description,
     });

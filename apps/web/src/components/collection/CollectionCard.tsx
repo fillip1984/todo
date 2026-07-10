@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { BrushCleaning, EllipsisVertical, Trash } from "lucide-react";
 import { MdChecklist } from "react-icons/md";
 
-import type { ListSummaryType } from "@todo/api";
+import type { CollectionSummaryType } from "@todo/api";
 
 import { useTRPC } from "~/trpc/react";
 import { calculateProgress } from "~/utils/progress-utils";
@@ -17,40 +17,40 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 
-export default function ListCard({ list }: { list: ListSummaryType }) {
+export default function CollectionCard({ collection }: { collection: CollectionSummaryType }) {
   const queryClient = useQueryClient();
   const trpc = useTRPC();
-  const deleteList = useMutation(
-    trpc.list.delete.mutationOptions({
+  const deleteCollection = useMutation(
+    trpc.collection.delete.mutationOptions({
       onSuccess: () => {
-        void queryClient.invalidateQueries(trpc.list.pathFilter());
+        void queryClient.invalidateQueries(trpc.collection.pathFilter());
       },
     }),
   );
 
   return (
-    <Link href={`/lists/${list.id}`}>
+    <Link href={`/collections/${collection.id}`}>
       <div className="flex h-28 items-center gap-2 rounded-lg border px-2 shadow-sm transition-colors ease-in-out hover:bg-gray-700">
         <ProgressBadge
           progress={calculateProgress({
-            completed: list.completedTaskCount,
-            total: list.taskCount,
+            completed: collection.completedTaskCount,
+            total: collection.taskCount,
           })}
           icon={<BrushCleaning />}
         />
 
         <div className="flex h-full grow flex-col pt-2">
-          <h2 className="line-clamp-1 text-lg font-semibold">{list.name}</h2>
+          <h2 className="line-clamp-1 text-lg font-semibold">{collection.name}</h2>
           <p className="text-muted-foreground line-clamp-2 text-sm">
-            {list.description && list.description.trim().length > 0
-              ? list.description
+            {collection.description && collection.description.trim().length > 0
+              ? collection.description
               : "\u00A0"}
           </p>
           <div className="mt-auto flex pb-1">
-            {list.taskCount > 0 && (
+            {collection.taskCount > 0 && (
               <Badge variant={"outline"} className="align-bottom">
                 <MdChecklist />
-                {list.completedTaskCount}/{list.taskCount}
+                {collection.completedTaskCount}/{collection.taskCount}
               </Badge>
             )}
             {/* TODO: ideas for other badges */}
@@ -58,7 +58,7 @@ export default function ListCard({ list }: { list: ListSummaryType }) {
               <Flag />
             </Badge>
             <Badge variant={"secondary"} className="ml-2 align-bottom">
-              {list.uncompletedHighPriorityTaskCount} High Priority
+              {collection.uncompletedHighPriorityTaskCount} High Priority
             </Badge>
             <Badge variant={"outline"} className="ml-2 align-bottom">
               <FaCalendarDay /> 10/1/26
@@ -76,7 +76,7 @@ export default function ListCard({ list }: { list: ListSummaryType }) {
             <DropdownMenuItem
               onClick={(e) => {
                 e.preventDefault();
-                deleteList.mutate({ id: list.id });
+                deleteCollection.mutate({ id: collection.id });
               }}
             >
               <Trash />

@@ -1,19 +1,19 @@
-import { defineRelations } from "drizzle-orm";
+import { defineRelations } from "drizzle-orm"
 
-import * as schema from "./index";
+import * as schema from "./index"
 
 export const relations = defineRelations(schema, (r) => ({
-  list: {
+  collection: {
     tasks: r.many.task(),
     user: r.one.user({
-      from: r.list.userId,
+      from: r.collection.userId,
       to: r.user.id,
     }),
   },
   task: {
-    list: r.one.list({
-      from: r.task.listId,
-      to: r.list.id,
+    collection: r.one.collection({
+      from: r.task.collectionId,
+      to: r.collection.id,
     }),
     user: r.one.user({
       from: r.task.userId,
@@ -21,16 +21,16 @@ export const relations = defineRelations(schema, (r) => ({
     }),
   },
   // auth relations
-  session: {
-    user: r.one.user({
-      from: r.session.userId,
-      to: r.user.id,
-    }),
-  },
-  account: {
-    user: r.one.user({
-      from: r.account.userId,
-      to: r.user.id,
-    }),
-  },
-}));
+  // session: {
+  //   user: r.one.user({
+  //     from: r.session.userId,
+  //     to: r.user.id,
+  //   }),
+  // },
+  // account: {
+  //   user: r.one.user({
+  //     from: r.account.userId,
+  //     to: r.user.id,
+  //   }),
+  // },
+}))

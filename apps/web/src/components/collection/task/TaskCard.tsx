@@ -20,7 +20,7 @@ export default function TaskCard({ task }: { task: TaskType }) {
   const updateTask = useMutation(
     trpc.task.update.mutationOptions({
       onSuccess: () => {
-        void queryClient.invalidateQueries(trpc.list.pathFilter());
+        void queryClient.invalidateQueries(trpc.collection.pathFilter());
       },
     }),
   );
@@ -54,7 +54,7 @@ export default function TaskCard({ task }: { task: TaskType }) {
   const deleteTask = useMutation(
     trpc.task.delete.mutationOptions({
       onSuccess: () => {
-        void queryClient.invalidateQueries(trpc.list.pathFilter());
+        void queryClient.invalidateQueries(trpc.collection.pathFilter());
       },
     }),
   );

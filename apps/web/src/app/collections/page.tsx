@@ -4,8 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { SearchX } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
-import CreateList from "~/components/list/CreateList";
-import ListCard from "~/components/list/ListCard";
+import CreateCollection from "~/components/collection/CreateCollection";
+import CollectionCard from "~/components/collection/CollectionCard";
 import Container from "~/components/my-ui/container";
 import LoadingAndRetry from "~/components/my-ui/loadingAndRetry";
 import { Button } from "~/components/ui/button";
@@ -23,11 +23,11 @@ import { useTRPC } from "~/trpc/react";
 export default function HomePage() {
   const trpc = useTRPC();
   const {
-    data: lists,
+    data: collections,
     isLoading,
     isError,
     refetch,
-  } = useQuery(trpc.list.readAll.queryOptions());
+  } = useQuery(trpc.collection.readAll.queryOptions());
 
   if (isLoading || isError) {
     return (
@@ -40,24 +40,24 @@ export default function HomePage() {
   }
 
   // empty view
-  if (lists?.length === 0) {
+  if (collections?.length === 0) {
     return (
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
             <SearchX />
           </EmptyMedia>
-          <EmptyTitle>No Lists Yet</EmptyTitle>
+          <EmptyTitle>No Collections Yet</EmptyTitle>
           <EmptyDescription>
-            You haven&apos;t created any lists yet. Get started by creating your
-            first list.
+            You haven&apos;t created any collections yet. Get started by creating your
+            first collection.
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
           <div className="flex w-full flex-col gap-4">
-            <CreateList />
+            <CreateCollection />
             <Separator />
-            <Button variant="outline">Import List</Button>
+            <Button variant="outline">Import Collection</Button>
           </div>
         </EmptyContent>
       </Empty>
@@ -70,9 +70,9 @@ export default function HomePage() {
       <div className="rounded-xl bg-gray-800 p-2">
         <div className="flex flex-col gap-2">
           <AnimatePresence>
-            {lists?.map((list) => (
+            {collections?.map((collection) => (
               <motion.div
-                key={list.id}
+                key={collection.id}
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
@@ -80,7 +80,7 @@ export default function HomePage() {
                   delayChildren: 0.2,
                 }}
               >
-                <ListCard list={list} />
+                <CollectionCard collection={collection} />
               </motion.div>
             ))}
           </AnimatePresence>
@@ -88,7 +88,7 @@ export default function HomePage() {
       </div>
 
       <div className="rounded-xl bg-gray-800 p-4">
-        <CreateList />
+        <CreateCollection />
       </div>
     </Container>
   );
